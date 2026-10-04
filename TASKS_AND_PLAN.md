@@ -57,8 +57,29 @@
 * **Ngày 5:** Hợp nhất các phần báo cáo. Lập bảng so sánh 3 mô hình. Cả 4 thành viên cùng thảo luận viết Phần V: Kết luận.
 * **Ngày 6:** Review chéo bài (A đọc của B, B đọc C,...), chuẩn hóa format Word, thêm References, tạo file README.md cho GitHub và hoàn thành.
 
----
-## 💡 Quy ước làm việc trên GitHub
-1. Thư mục dữ liệu (vd: `dataset/`) không đẩy lên GitHub (nên thêm vào `.gitignore`). Thành viên A chỉ đẩy **code tạo dữ liệu**.
-2. Khi code xong phần nào, luôn nhớ Commit với thông điệp rõ ràng, vd: `Thành viên A: Hoàn thành chia tập Train/Val/Test`.
-3. Tránh sửa chung 1 file code, mỗi người code trên 1 file riêng biệt theo đúng tên đã phân công để không bao giờ bị conflict mã nguồn.
+## 💡 Quy tắc làm việc Nhóm bằng Git (Git Workflow)
+Để tránh việc code đè lên nhau gây mất dữ liệu (Conflict), nhóm TUYỆT ĐỐI tuân thủ quy trình tạo nhánh (Branching) như sau:
+
+**1. Không code trực tiếp trên nhánh `main`:** Nhánh `main` chỉ dùng để lưu code đã hoàn chỉnh và chạy ngon lành.
+**2. Mỗi người tạo một nhánh riêng (Branch) để làm việc.** 
+- Cú pháp tạo nhánh và chuyển sang nhánh đó: `git checkout -b <tên-nhánh>`
+- Ví dụ cách đặt tên nhánh: 
+  + B: `git checkout -b feature/simple-cnn`
+  + C: `git checkout -b feature/complex-cnn`
+  + D: `git checkout -b feature/transfer-learning`
+
+**3. Quy trình code hàng ngày của từng cá nhân:**
+- **Bước 1:** Lấy code mới nhất từ nhánh main về máy: `git pull origin main`
+- **Bước 2:** Chuyển sang nhánh của mình: `git checkout feature/<tên-nhánh-của-bạn>`
+- **Bước 3:** Mở VSCode/Google Colab và bắt đầu code vào file được phân công.
+- **Bước 4:** Code xong thì đẩy lên nhánh của TỰ MÌNH:
+  ```bash
+  git add .
+  git commit -m "Tên bạn: Nội dung vừa code xong"
+  git push origin feature/<tên-nhánh-của-bạn>
+  ```
+- **Bước 5:** Lên trang web GitHub, bấm nút **"Compare & pull request"** để yêu cầu gộp code vào `main`. Leader sẽ duyệt.
+
+**4. Quy tắc vàng:**
+- Thư mục ảnh (`dataset/`) KHÔNG ĐƯỢC đẩy lên Git (đã chặn ở `.gitignore`).
+- Tránh sửa chung 1 file code. Ai phụ trách file nào thì chỉ gõ vào file đó. Mọi thứ sẽ không bao giờ bị conflict!
