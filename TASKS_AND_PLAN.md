@@ -7,17 +7,14 @@
 
 ## 👥 Bảng Phân Công Nhiệm Vụ (Roles & Responsibilities)
 
-### 🧑‍💻 Thành viên A: Data Master (Chịu trách nhiệm về Dữ liệu)
-* **Phần Code (`data_prep.py` hoặc `.ipynb`):**
-  - Tải dữ liệu từ Kaggle sử dụng `kagglehub`.
-  - Khám phá dữ liệu (EDA): Hiển thị số lượng ảnh, số lượng class (bệnh), thống kê kích thước ảnh.
-  - Phân chia tập dữ liệu: Chia thành 3 tập **Train (70%) / Validation (15%) / Test (15%)**. Đảm bảo thư mục lưu trữ rõ ràng để 3 thành viên khác dễ dàng sử dụng.
-  - Tiền xử lý (Preprocessing): Resize ảnh (vd: 224x224), chuẩn hóa pixel (`1./255`).
-  - Data Augmentation: Sử dụng `ImageDataGenerator` để thiết lập các phép xoay (rotation), lật (flip), zoom để tránh overfitting trên tập Train.
+### 🧑‍💻 Thành viên A: Data Master & Transfer Learning (ResNet50)
+* **Phần Code (`data_prep.py` và `resnet_model.py`):**
+  - Đảm nhiệm toàn bộ quy trình chuẩn bị dữ liệu chung: Tải tập dữ liệu, chia tập Train (70%) / Val (15%) / Test (15%) và thiết lập Data Augmentation để 3 thành viên còn lại dùng chung.
+  - Tự thiết kế và huấn luyện thêm một mô hình Transfer Learning "hạng nặng": **ResNet50** (để so sánh với mô hình MobileNetV2 của Thành viên D).
+  - Đánh giá mô hình của mình trên tập Test.
 * **Phần Viết Báo cáo (Word):**
-  - Viết **Phần I (Problem Description)**: Nêu mục tiêu nghiên cứu, input, output.
-  - Viết **Phần II (Dataset Description)**: Kèm theo link download, thống kê số lượng ảnh, ví dụ trực quan về các loại lá.
-  - Viết **Phần III (Data Preprocessing)**: Viết chi tiết về các bước làm sạch, chuẩn hóa, augment, và cách phân chia dữ liệu.
+  - Viết **Phần I (Problem Description)**, **Phần II (Dataset Description)** và **Phần III (Data Preprocessing)**.
+  - Viết mục thiết kế cấu trúc mạng **ResNet50** trong Phần III và điền kết quả vào Phần IV.
 
 ### 🧑‍💻 Thành viên B: Simple CNN Developer
 * **Phần Code (`simple_cnn.py`):**
