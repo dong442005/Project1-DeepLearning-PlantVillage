@@ -1,7 +1,9 @@
 # 🌿 Kế hoạch Thực hiện Project 1: Deep Learning - PlantVillage 
 
 **Mục tiêu:** Xây dựng hệ thống phân loại bệnh trên lá cây sử dụng bộ dữ liệu PlantVillage. Phân công 4 thành viên theo quy tắc **"Ai code phần nào, viết report phần đó"**.
-**Thời hạn:** 6 Ngày Sprint.
+**Thời hạn (Deadline):** 
+- Hạn chót nộp Code: Ngày 08.
+- Hạn chót nộp Báo cáo (Word): Ngày 10.
 
 ---
 
@@ -49,13 +51,21 @@
 
 ---
 
-## 🗓 Lịch Trình Thực Thi 6 Ngày
-* **Ngày 1:** Lập kho chứa GitHub, Thành viên A viết code Data Prep (Tải & chia tập), các thành viên khác clone repo và chia nhau viết Phần 1 báo cáo (Lý thuyết).
-* **Ngày 2:** Bắt đầu dựng khung. Thành viên A viết xong Data Prep report. B, C, D tạo script riêng, thiết kế sơ đồ mô hình và viết cấu trúc vào báo cáo.
-* **Ngày 3:** B, C, D ném mô hình lên Google Colab / Kaggle và tiến hành Training. A hỗ trợ fix lỗi pipeline data nếu có.
-* **Ngày 4:** B, C, D tính toán Metrics (Accuracy, Precision, Recall, F1), xuất biểu đồ Loss/Accuracy và đẩy vào kho GitHub. Viết hoàn chỉnh báo cáo phần IV.
-* **Ngày 5:** Hợp nhất các phần báo cáo. Lập bảng so sánh 3 mô hình. Cả 4 thành viên cùng thảo luận viết Phần V: Kết luận.
-* **Ngày 6:** Review chéo bài (A đọc của B, B đọc C,...), chuẩn hóa format Word, thêm References, tạo file README.md cho GitHub và hoàn thành.
+## 🗓 Lịch Trình Thực Thi (Theo Mốc Thời Gian)
+**Mốc 1 (Từ nay đến ngày 08): TẬP TRUNG HOÀN THIỆN CODE**
+* **Thành viên A:** Hoàn thành file `data_prep.py` và chạy mượt mô hình `resnet_model.py`.
+* **Thành viên B, C, D:** Hoàn thiện mô hình cá nhân (`simple_cnn.py`, `complex_cnn.py`, `transfer_learning.py`).
+* Bắt buộc phải train xong, xuất được Biểu đồ Loss/Accuracy và Ma trận nhầm lẫn (Confusion Matrix).
+* Tất cả phải Push code hoàn chỉnh lên nhánh `main` trước 22h ngày 08.
+
+**Mốc 2 (Ngày 09 - 10): TẬP TRUNG HOÀN THIỆN BÁO CÁO (WORD)**
+* **Ngày 09:**
+  - Các thành viên đổ dữ liệu (Ảnh mô hình, Biểu đồ kết quả) vào Phần III và Phần IV của báo cáo theo phân công.
+  - Viết Lý thuyết Phần I.
+* **Ngày 10:** 
+  - Leader check,format các phần.
+  - Cả nhóm chốt Bảng so sánh kết quả 4 mô hình, viết Phân tích lỗi và Kết luận (Phần V).
+  - Chuẩn hóa Format Word, chèn Tài liệu tham khảo và xuất PDF nộp bài
 
 ## 💡 Quy tắc làm việc Nhóm bằng Git (Git Workflow)
 Để tránh việc code đè lên nhau gây mất dữ liệu (Conflict), nhóm TUYỆT ĐỐI tuân thủ quy trình tạo nhánh (Branching) như sau:
