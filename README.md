@@ -22,17 +22,19 @@ Dự án được thực hiện bởi nhóm 4 người, phân chia kỹ thuật 
 ## 📂 Cấu trúc thư mục (Folder Structure)
 ```text
 Project1-DeepLearning-PlantVillage/
-├── dataset/                     # (Bị ẩn bởi .gitignore) Chứa ảnh gốc chia theo train/val/test
+├── data/                        # (Bị ẩn bởi .gitignore) Chứa ảnh gốc chia theo train/val/test
+├── notebooks/                   # Chứa các file jupyter notebook (.ipynb) khám phá dữ liệu
+├── src/                         # Chứa toàn bộ source code Python
+│   ├── data_prep.py             # (Thành viên A) Script tải và chia tập dữ liệu
+│   ├── resnet_model.py          # (Thành viên A) Script train mô hình ResNet50
+│   ├── simple_cnn.py            # (Thành viên B) Script train mô hình cơ sở LeNet-5
+│   ├── complex_cnn.py           # (Thành viên C) Script train mô hình CNN sâu
+│   └── transfer_learning.py     # (Thành viên D) Script train mô hình MobileNetV2
 ├── .gitignore                   # Chặn các file rác, file dataset nặng
 ├── README.md                    # Lời giới thiệu dự án
 ├── TASKS_AND_PLAN.md            # Bảng phân công nhiệm vụ và lịch trình
 ├── GUIDELINES_FOR_MEMBERS.md    # Hướng dẫn chi tiết & Prompt AI cho từng người
-├── REPORT_OUTLINE.md            # Dàn ý mục lục và phân công viết báo cáo Word
-├── data_prep.py                 # (Thành viên A) Script tải và chia tập dữ liệu
-├── resnet_model.py              # (Thành viên A) Script train mô hình ResNet50
-├── simple_cnn.py                # (Thành viên B) Script train mô hình cơ sở LeNet-5
-├── complex_cnn.py               # (Thành viên C) Script train mô hình CNN sâu
-└── transfer_learning.py         # (Thành viên D) Script train mô hình MobileNetV2
+└── REPORT_OUTLINE.md            # Dàn ý mục lục và phân công viết báo cáo Word
 ```
 
 ## 🚀 Hướng dẫn cài đặt và sử dụng
@@ -46,16 +48,16 @@ pip install tensorflow keras kagglehub scikit-learn numpy matplotlib seaborn
 ### 2. Tải và phân chia Dữ liệu
 Để tự động tải dữ liệu và chia thành các thư mục con `train/`, `val/`, và `test/`, hãy chạy lệnh:
 ```bash
-python data_prep.py
+python src/data_prep.py
 ```
-> **Chú ý:** Quá trình tải sẽ mất khoảng vài phút tùy thuộc vào mạng của bạn. Thư mục `dataset/` (nơi chứa ảnh) đã được cấu hình ẩn trong `.gitignore` để tránh đẩy dữ liệu khổng lồ lên Git.
+> **Chú ý:** Quá trình tải sẽ mất khoảng vài phút tùy thuộc vào mạng của bạn. Thư mục `data/` (nơi chứa ảnh) đã được cấu hình ẩn trong `.gitignore` để tránh đẩy dữ liệu khổng lồ lên Git.
 
 ### 3. Huấn luyện các Mô hình
-Sau khi đã có thư mục `dataset/`, hãy chạy từng file code sau để huấn luyện 4 loại mô hình tương ứng:
-- `python simple_cnn.py` *(Đang xây dựng...)*
-- `python complex_cnn.py` *(Đang xây dựng...)*
-- `python transfer_learning.py` *(Đang xây dựng - MobileNetV2)*
-- `python resnet_model.py` *(Đang xây dựng - ResNet50)*
+Sau khi đã có thư mục `data/`, hãy chạy từng file code sau để huấn luyện 4 loại mô hình tương ứng:
+- `python src/simple_cnn.py` *(Đang xây dựng...)*
+- `python src/complex_cnn.py` *(Đang xây dựng...)*
+- `python src/transfer_learning.py` *(Đang xây dựng - MobileNetV2)*
+- `python src/resnet_model.py` *(Đang xây dựng - ResNet50)*
 
 ## 📊 Kết quả thực nghiệm
 Phần này sẽ được cập nhật sau ngày Training (Ngày 4).
