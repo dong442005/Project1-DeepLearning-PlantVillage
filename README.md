@@ -40,9 +40,9 @@ Project1-DeepLearning-PlantVillage/
 ## 🚀 Hướng dẫn cài đặt và sử dụng
 
 ### 1. Cài đặt thư viện yêu cầu
-Khuyến khích chạy mã nguồn này trên **Google Colab** hoặc **Kaggle Notebooks** để sử dụng GPU miễn phí. Các thư viện cần thiết:
+Khuyến khích chạy mã nguồn này trên **Google Colab** hoặc **Kaggle Notebooks** để sử dụng GPU miễn phí. Nếu chạy trên máy cá nhân, hãy cài đặt các thư viện cần thiết bằng lệnh:
 ```bash
-pip install tensorflow keras kagglehub scikit-learn numpy matplotlib seaborn
+pip install -r requirements.txt
 ```
 
 ### 2. Tải và phân chia Dữ liệu
