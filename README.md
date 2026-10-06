@@ -39,11 +39,17 @@ Project1-DeepLearning-PlantVillage/
 
 ## 🚀 Hướng dẫn cài đặt và sử dụng
 
-### 1. Cài đặt thư viện yêu cầu
-Khuyến khích chạy mã nguồn này trên **Google Colab** hoặc **Kaggle Notebooks** để sử dụng GPU miễn phí. Nếu chạy trên máy cá nhân, hãy cài đặt các thư viện cần thiết bằng lệnh:
+### 1. Cài đặt môi trường và Thư viện
+Nếu chạy trên máy cá nhân, nhóm TUYỆT ĐỐI thống nhất tạo Môi trường ảo (Virtual Environment) để không bị xung đột phiên bản như sau:
+
+**Dùng Conda (Nhanh và tiện nhất):**
 ```bash
+conda create -n dl_env python=3.10
+conda activate dl_env
 pip install -r requirements.txt
 ```
+
+*(Hoặc dùng `python -m venv venv` nếu bạn không xài Conda).*
 
 ### 2. Tải và phân chia Dữ liệu
 Để tự động tải dữ liệu và chia thành các thư mục con `train/`, `val/`, và `test/`, hãy chạy lệnh:

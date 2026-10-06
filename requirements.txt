@@ -1,8 +1,8 @@
-tensorflow
-keras
+tensorflow==2.15.0
+keras==2.15.0
 kagglehub
 scikit-learn
-numpy
+numpy<2.0.0
 matplotlib
 seaborn
 opencv-python
