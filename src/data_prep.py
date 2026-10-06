@@ -19,9 +19,9 @@ if not os.path.exists(source_dir):
 
 print(f"Thư mục chứa ảnh gốc: {source_dir}")
 
-# Thư mục đích trong Project của chúng ta (đã được dời vào thư mục data/)
+# Thư mục đích trong Project của chúng ta(thư mục data/)
 # Lưu ý: file này đang ở trong thư mục src/, nên thư mục gốc là '../'
-base_dir = '../data'
+base_dir = 'data'
 train_dir = os.path.join(base_dir, 'train')
 val_dir = os.path.join(base_dir, 'val')
 test_dir = os.path.join(base_dir, 'test')
@@ -63,7 +63,7 @@ for cls in classes:
 
 print("==========================================")
 print("✅ HOÀN TẤT PHÂN CHIA DỮ LIỆU!")
-print("Dữ liệu đã nằm gọn trong thư mục ../data của Project.")
+print("Dữ liệu đã nằm gọn trong thư mục data của Project.")
 print("==========================================")
 
 # ==========================================
@@ -95,21 +95,21 @@ test_val_datagen = ImageDataGenerator(rescale=1./255)
 
 # 2. Đọc dữ liệu từ thư mục (Flow from directory)
 train_generator = train_datagen.flow_from_directory(
-    '../data/train',
+    'data/train',
     target_size=IMG_SIZE,
     batch_size=BATCH_SIZE,
     class_mode='categorical'
 )
 
 val_generator = test_val_datagen.flow_from_directory(
-    '../data/val',
+    'data/val',
     target_size=IMG_SIZE,
     batch_size=BATCH_SIZE,
     class_mode='categorical'
 )
 
 test_generator = test_val_datagen.flow_from_directory(
-    '../data/test',
+    'data/test',
     target_size=IMG_SIZE,
     batch_size=BATCH_SIZE,
     class_mode='categorical',
