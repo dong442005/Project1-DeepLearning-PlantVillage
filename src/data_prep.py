@@ -45,6 +45,7 @@ for cls in classes:
     os.makedirs(os.path.join(test_dir, cls), exist_ok=True)
     
     cls_path = os.path.join(source_dir, cls)
+    # Lấy toàn bộ ảnh của MỘT lớp
     images = [f for f in os.listdir(cls_path) if f.endswith(('.jpg', '.JPG', '.png', '.jpeg'))]
     
     # Chia lần 1: 70% Train, 30% cho (Val + Test)
@@ -80,9 +81,22 @@ from tensorflow.keras.preprocessing.image import ImageDataGenerator
 IMG_SIZE = (224, 224) # Kích thước ảnh chuẩn hóa (Khuyên dùng cho ResNet/VGG/MobileNet)
 BATCH_SIZE = 32
 
-# 1. Khởi tạo Data Augmentation (Tăng cường dữ liệu) chỉ cho tập Train
+# 1. Hàm chuẩn hóa Z-Score dựa trên Mean/Std tính được từ tập Train
+import numpy as np
+
+def z_score_norm(img):
+    img = img / 255.0
+    mean = np.array([0.46658055, 0.48930454, 0.41043331])
+    std = np.array([0.1992171,  0.17497431, 0.21742669])
+    return (img - mean) / std
+
+# LƯU Ý CHO THÀNH VIÊN A và D (Transfer Learning): 
+# Thay vì dùng hàm z_score_norm này, hãy import và dùng hàm của chính model đó.
+# Ví dụ: from tensorflow.keras.applications.resnet import preprocess_input
+
+# 2. Khởi tạo Data Augmentation (Tăng cường dữ liệu) chỉ cho tập Train
 train_datagen = ImageDataGenerator(
-    rescale=1./255,          # Đưa pixel từ [0-255] về [0-1]
+    preprocessing_function=z_score_norm, # Dùng Z-Score thay cho rescale=1./255
     rotation_range=20,       # Xoay ngẫu nhiên
     width_shift_range=0.2,   # Dịch chuyển ngang
     height_shift_range=0.2,  # Dịch chuyển dọc
@@ -90,8 +104,8 @@ train_datagen = ImageDataGenerator(
     zoom_range=0.2           # Thu phóng ngẫu nhiên
 )
 
-# Tập Validation và Test KHÔNG ĐƯỢC làm méo, chỉ chuẩn hóa pixel
-test_val_datagen = ImageDataGenerator(rescale=1./255)
+# Tập Validation và Test KHÔNG ĐƯỢC làm méo, chỉ chuẩn hóa pixel bằng Z-score
+test_val_datagen = ImageDataGenerator(preprocessing_function=z_score_norm)
 
 # 2. Đọc dữ liệu từ thư mục (Flow from directory)
 train_generator = train_datagen.flow_from_directory(
@@ -115,4 +129,28 @@ test_generator = test_val_datagen.flow_from_directory(
     class_mode='categorical',
     shuffle=False # [QUAN TRỌNG] Phải tắt shuffle ở tập Test để vẽ Confusion Matrix không bị sai lệch
 )
+
+# 3. Tính toán Class Weights (Trọng số mất cân bằng) tự động
+import numpy as np
+from sklearn.utils.class_weight import compute_class_weight
+
+train_labels = train_generator.classes
+class_weights_array = compute_class_weight(
+    class_weight='balanced',
+    classes=np.unique(train_labels),
+    y=train_labels
+)
+
+# Chuyển đổi sang dạng dictionary (từ điển) vì Keras yêu cầu định dạng này
+class_weight_dict = dict(enumerate(class_weights_array))
+
+# LƯU Ý KHI TRAIN (DÀNH CHO B, C, D): 
+# Hãy nhớ nhét biến class_weight_dict vào tham số class_weight trong hàm model.fit()
+# Ví dụ:
+# history = model.fit(
+#     train_generator,
+#     epochs=20,
+#     validation_data=val_generator,
+#     class_weight=class_weight_dict  <--- CỰC KỲ QUAN TRỌNG
+# )
 '''
