@@ -1,11 +1,6 @@
-"""
-Thành viên B: Simple CNN (Baseline lấy cảm hứng từ LeNet-5) cho PlantVillage (38 lớp).
-
-Chạy từ thư mục gốc của repo:
-    python src/simple_cnn.py                 # train đầy đủ (mặc định 20 epochs)
-    python src/simple_cnn.py --epochs 30
-    python src/simple_cnn.py --smoke-test    # chạy thử nhanh toàn bộ pipeline, file kết quả có hậu tố _smoke
-"""
+# thành viên b: simple cnn (baseline dựa theo lenet-5) cho bộ plantvillage 38 lớp
+# chạy từ thư mục gốc repo, mặc định train 20 epoch
+# thêm --epochs n để đổi số epoch, --smoke-test để chạy thử nhanh (file kq có đuôi _smoke)
 import argparse
 import os
 import random
@@ -13,13 +8,13 @@ import sys
 import time
 
 import matplotlib
-matplotlib.use('Agg')  # Chạy script không cần màn hình (Colab / terminal)
+matplotlib.use('Agg')  # để vẽ đc khi ko có màn hình (colab, terminal)
 import matplotlib.pyplot as plt
 import numpy as np
 import seaborn as sns
 import tensorflow as tf
 from tensorflow.keras import layers, models
-from tensorflow.keras.callbacks import EarlyStopping, ModelCheckpoint
+from tensorflow.keras.callbacks import EarlyStopping, ModelCheckpoint, ReduceLROnPlateau
 from tensorflow.keras.models import load_model
 from tensorflow.keras.optimizers import Adam
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
@@ -27,7 +22,7 @@ from sklearn.metrics import (accuracy_score, classification_report, confusion_ma
                              precision_recall_fscore_support)
 from sklearn.utils.class_weight import compute_class_weight
 
-# 1️⃣ Cấu hình chung (giống hệt data_prep.py của Thành viên A)
+# cấu hình chung, để giống y hệt bên data_prep của a
 IMG_SIZE = (224, 224)
 BATCH_SIZE = 32
 SEED = 42
@@ -35,6 +30,7 @@ TRAIN_DIR = 'data/train'
 VAL_DIR = 'data/val'
 TEST_DIR = 'data/test'
 RESULTS_DIR = 'results'
+WORKERS = min(8, os.cpu_count() or 1)  # số luồng đọc + augment ảnh song song, khâu này chậm nhất lúc train
 
 
 def set_seeds(seed=SEED):
@@ -44,7 +40,7 @@ def set_seeds(seed=SEED):
     tf.random.set_seed(seed)
 
 
-# 2️⃣ Chuẩn hóa Z-Score (copy từ docstring cuối file src/data_prep.py, Mean/Std tính trên tập Train)
+# chuẩn hóa z-score, copy từ đoạn mẫu cuối file data_prep, mean vs std tính trên tập train
 def z_score_norm(img):
     img = img / 255.0
     mean = np.array([0.46658055, 0.48930454, 0.41043331])
@@ -64,7 +60,7 @@ def check_data_dirs():
 
 
 def build_generators():
-    # Data Augmentation CHỈ cho tập Train
+    # augment chỉ lm cho tập train thôi
     train_datagen = ImageDataGenerator(
         preprocessing_function=z_score_norm,
         rotation_range=20,
@@ -73,7 +69,7 @@ def build_generators():
         horizontal_flip=True,
         zoom_range=0.2
     )
-    # Val/Test chỉ chuẩn hóa Z-score, không augmentation
+    # val vs test chỉ chuẩn hóa z-score, ko augment
     test_val_datagen = ImageDataGenerator(preprocessing_function=z_score_norm)
 
     train_generator = train_datagen.flow_from_directory(
@@ -93,13 +89,16 @@ def build_generators():
         target_size=IMG_SIZE,
         batch_size=BATCH_SIZE,
         class_mode='categorical',
-        shuffle=False  # [QUAN TRỌNG] Tắt shuffle để y_pred khớp thứ tự test_generator.classes
+        shuffle=False  # quan trọng: tắt shuffle để y_pred khớp thứ tự nhãn của tập test
     )
+    # train vs val đọc ảnh song song nhiều luồng, test để 1 luồng cho chắc thứ tự dự đoán ko bị lệch
+    for generator in (train_generator, val_generator):
+        generator.workers = WORKERS
     return train_generator, val_generator, test_generator
 
 
 def compute_class_weight_dict(train_generator):
-    # Class Weights 'balanced' vì dữ liệu mất cân bằng (~36x giữa lớp nhiều nhất và ít nhất)
+    # class weight kiểu balanced vì data lệch nhau tầm 36 lần giữa lớp nhiều nhất vs ít nhất
     train_labels = train_generator.classes
     class_weights_array = compute_class_weight(
         class_weight='balanced',
@@ -109,17 +108,20 @@ def compute_class_weight_dict(train_generator):
     return dict(enumerate(class_weights_array))
 
 
-# 3️⃣ Mô hình Simple CNN lấy cảm hứng từ LeNet-5 (KHÔNG BatchNorm, KHÔNG Dropout)
+# mô hình simple cnn dựa theo lenet-5, ko dùng batchnorm vs dropout
 def build_simple_cnn(num_classes):
     model = models.Sequential([
         layers.Input(shape=IMG_SIZE + (3,)),
-        # Block 1: 224x224x3 -> Conv 5x5 -> 220x220x6 -> MaxPool -> 110x110x6
+        # khối 1: 224x224x3 -> conv 5x5 -> 220x220x6 -> maxpool -> 110x110x6
         layers.Conv2D(6, (5, 5), activation='relu'),
         layers.MaxPooling2D((2, 2)),
-        # Block 2: 110x110x6 -> Conv 5x5 -> 106x106x16 -> MaxPool -> 53x53x16
+        # khối 2: 110x110x6 -> conv 5x5 -> 106x106x16 -> maxpool -> 53x53x16
         layers.Conv2D(16, (5, 5), activation='relu'),
         layers.MaxPooling2D((2, 2)),
-        # Phân loại: Flatten (53*53*16 = 44,944) -> Dense 120 -> Dense 84 -> Softmax
+        # khối 3: 53x53x16 -> conv 5x5 -> 49x49x32 -> maxpool -> 24x24x32, vùng nhìn tăng từ 16x16 lên 36x36 pixel
+        layers.Conv2D(32, (5, 5), activation='relu'),
+        layers.MaxPooling2D((2, 2)),
+        # phần phân loại: flatten (24*24*32 = 18432) -> dense 120 -> dense 84 -> softmax
         layers.Flatten(),
         layers.Dense(120, activation='relu'),
         layers.Dense(84, activation='relu'),
@@ -132,7 +134,7 @@ def build_simple_cnn(num_classes):
     return model
 
 
-# 4️⃣ Vẽ đồ thị Loss / Accuracy
+# vẽ đồ thị loss vs accuracy theo từng epoch
 def plot_training_curves(history, path):
     epochs_range = range(1, len(history['loss']) + 1)
     fig, (ax_loss, ax_acc) = plt.subplots(1, 2, figsize=(14, 5))
@@ -159,7 +161,7 @@ def plot_training_curves(history, path):
     plt.close(fig)
 
 
-# 5️⃣ Vẽ Ma trận nhầm lẫn (Confusion Matrix)
+# vẽ ma trận nhầm lẫn
 def plot_confusion_matrix(cm, class_names, path):
     plt.figure(figsize=(20, 20))
     sns.heatmap(cm, annot=True, fmt='d', cmap='Blues', annot_kws={'size': 7},
@@ -179,7 +181,7 @@ def main():
                         help='Chạy thử nhanh: 5 bước train, 2 bước val, 1 epoch, 2 batch test; file có hậu tố _smoke')
     args = parser.parse_args()
 
-    # In tiếng Việt không lỗi trên console Windows (cp1252)
+    # để in tiếng việt ko bị lỗi trên console windows (cp1252)
     for stream in (sys.stdout, sys.stderr):
         if hasattr(stream, 'reconfigure'):
             stream.reconfigure(encoding='utf-8')
@@ -210,10 +212,12 @@ def main():
 
     callbacks = [
         EarlyStopping(monitor='val_loss', patience=5, restore_best_weights=True),
-        ModelCheckpoint(model_path, monitor='val_loss', save_best_only=True)
+        ModelCheckpoint(model_path, monitor='val_loss', save_best_only=True),
+        # val_loss 2 epoch liền ko giảm thì giảm lr đi một nửa, cho val bớt dao động
+        ReduceLROnPlateau(monitor='val_loss', factor=0.5, patience=2, min_lr=1e-6, verbose=1)
     ]
 
-    # 6️⃣ Huấn luyện
+    # train
     start = time.time()
     history = model.fit(
         train_generator,
@@ -228,13 +232,13 @@ def main():
     epochs_trained = len(history.history['loss'])
     best_epoch = int(np.argmin(history.history['val_loss'])) + 1
 
-    # EarlyStopping chỉ khôi phục best weights khi dừng sớm; nạp lại file checkpoint
-    # để mô hình được đánh giá trùng với file .h5 nộp lên Drive (epoch có val_loss thấp nhất)
+    # earlystopping chỉ trả lại trọng số tốt nhất khi dừng sớm nên load lại file checkpoint
+    # để mô hình đem đi đánh giá trùng vs file h5 up lên drive (epoch có val_loss thấp nhất)
     model = load_model(model_path)
 
     plot_training_curves(history.history, curves_path)
 
-    # 7️⃣ Đánh giá trên tập Test
+    # đánh giá trên tập test
     test_loss, test_acc = model.evaluate(test_generator, steps=test_steps)
     Y_pred = model.predict(test_generator, steps=test_steps)
     y_pred = np.argmax(Y_pred, axis=1)
@@ -259,6 +263,7 @@ def main():
         f"Weighted Precision / Recall / F1 : {weighted[0]:.4f} / {weighted[1]:.4f} / {weighted[2]:.4f}\n"
         f"Tổng số tham số (params)  : {total_params:,}\n"
         f"Số epoch đã train         : {epochs_trained} (best epoch theo val_loss: {best_epoch})\n"
+        f"Learning rate theo epoch  : {', '.join(f'{lr:g}' for lr in history.history.get('learning_rate', []))}\n"
         f"Thời gian train           : {training_time:.1f} giây ({training_time / 60:.1f} phút)\n"
         f"File mô hình              : {model_path}\n"
     )
