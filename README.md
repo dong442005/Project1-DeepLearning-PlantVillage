@@ -65,9 +65,10 @@ Sau khi đã có thư mục `data/`, hãy chạy từng file code sau để hu�
 - `python src/transfer_learning.py` *(Đang xây dựng - MobileNetV2)*
 - `python src/resnet_model.py` *(Đang xây dựng - ResNet50)*
 
-## 📊 Kết quả thực nghiệm
-Phần này sẽ được cập nhật sau ngày Training (Ngày 4).
-Bao gồm:
-- Bảng so sánh các chỉ số **Accuracy, Precision, Recall, F1-Score** giữa 4 mô hình.
-- Biểu đồ **Loss/Accuracy** theo các epochs.
-- Ma trận nhầm lẫn (Confusion Matrix).
+## 📊 Kết quả thực nghiệm và Mô hình (Models & Results)
+Dưới đây là liên kết tải các mô hình (đã được lưu dưới dạng `.h5`) sau khi huấn luyện xong. Do kích thước file quá lớn (vượt giới hạn 100MB của GitHub), nhóm lưu trữ chúng trên Google Drive:
+
+- 🧠 **ResNet50 Model (Thành viên A - 223MB):** [Tải về tại đây](https://drive.google.com/file/d/1DooI4k3YiHRk8JXDBMMcKT2jk37YSW_T/view?usp=drive_link)
+- *(Các mô hình của Thành viên B, C, D sẽ được cập nhật sau)*
+
+Phần đánh giá chi tiết (Bảng so sánh Accuracy, F1-Score, Biểu đồ) sẽ được trình bày cụ thể trong Báo cáo Word cuối kỳ của nhóm.
