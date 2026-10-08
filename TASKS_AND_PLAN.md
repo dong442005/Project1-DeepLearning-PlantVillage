@@ -9,18 +9,18 @@
 
 ## 👥 Bảng Phân Công Nhiệm Vụ (Roles & Responsibilities)
 
-### 🧑‍💻 Thành viên A: Data Master & Transfer Learning (ResNet50)
+### 🧑‍💻 Phương Đông: Data Master & Transfer Learning (ResNet50)
 * **Phần Code (`data_prep.py` và `resnet_model.py`):**
   - Đảm nhiệm toàn bộ quy trình chuẩn bị dữ liệu chung: Tải tập dữ liệu, chia tập Train (70%) / Val (15%) / Test (15%) và thiết lập Data Augmentation để 3 thành viên còn lại dùng chung.
-  - Tự thiết kế và huấn luyện thêm một mô hình Transfer Learning "hạng nặng": **ResNet50** (để so sánh với mô hình MobileNetV2 của Thành viên D).
+  - Tự thiết kế và huấn luyện thêm một mô hình Transfer Learning "hạng nặng": **ResNet50** (để so sánh với mô hình MobileNetV2 của Việt Hằng).
   - Đánh giá mô hình của mình trên tập Test.
 * **Phần Viết Báo cáo (Word):**
   - Viết **Phần I (Problem Description)**, **Phần II (Dataset Description)** và **Phần III (Data Preprocessing)**.
   - Viết mục thiết kế cấu trúc mạng **ResNet50** trong Phần III và điền kết quả vào Phần IV.
 
-### 🧑‍💻 Thành viên B: Simple CNN Developer
+### 🧑‍💻 Vân Thư: Simple CNN Developer
 * **Phần Code (`simple_cnn.py`):**
-  - Tải tập dữ liệu đã xử lý từ Thành viên A.
+  - Tải tập dữ liệu đã xử lý từ Phương Đông.
   - Tự thiết kế một mô hình **Simple CNN**: Chỉ sử dụng các thành phần cơ bản (2-3 lớp `Conv2D`, `MaxPooling2D`, `Flatten`, `Dense`).
   - Huấn luyện mô hình, lưu lại file weight (`.h5` hoặc `.keras`).
   - Đánh giá trên tập Test chung: In ra Accuracy, Precision, Recall, F1-Score và vẽ đồ thị (Loss/Accuracy).
@@ -29,7 +29,7 @@
   - Viết mục **Thiết kế Simple CNN** trong Phần III: Vẽ và giải thích kiến trúc mô hình của mình.
   - Điền kết quả thực nghiệm và nhận xét mô hình vào **Phần IV (Experimental Results)**.
 
-### 🧑‍💻 Thành viên C: Complex CNN Developer
+### 🧑‍💻 Thu Trang: Complex CNN Developer
 * **Phần Code (`complex_cnn.py`):**
   - Thiết kế một mô hình **Complex CNN**: Mô hình sâu hơn, có cấu trúc Block (như VGG-style block).
   - Áp dụng các kỹ thuật nâng cao: `BatchNormalization`, `Dropout` để mô hình hoạt động hiệu quả hơn Simple CNN.
@@ -39,7 +39,7 @@
   - Viết mục **Thiết kế Complex CNN** trong Phần III: Vẽ kiến trúc, giải thích lý do dùng BatchNormalization, Dropout.
   - Điền kết quả thực nghiệm và nhận xét vào **Phần IV (Experimental Results)**.
 
-### 🧑‍💻 Thành viên D: Transfer Learning Expert
+### 🧑‍💻 Việt Hằng: Transfer Learning Expert
 * **Phần Code (`transfer_learning.py`):**
   - Khai báo một Pre-trained model (VD: `MobileNetV2` hoặc `VGG16` từ Keras Applications).
   - Fine-tuning: Đóng băng (Freeze) các lớp gốc, tự xây dựng thêm một vài lớp `Dense` để phân loại các class của PlantVillage.
@@ -53,8 +53,8 @@
 
 ## 🗓 Lịch Trình Thực Thi (Theo Mốc Thời Gian)
 **Mốc 1 (Từ nay đến ngày 08): TẬP TRUNG HOÀN THIỆN CODE**
-* **Thành viên A:** Hoàn thành file `data_prep.py` và chạy mượt mô hình `resnet_model.py`.
-* **Thành viên B, C, D:** Hoàn thiện mô hình cá nhân (`simple_cnn.py`, `complex_cnn.py`, `transfer_learning.py`).
+* **Phương Đông:** Hoàn thành file `data_prep.py` và chạy mượt mô hình `resnet_model.py`.
+* **Vân Thư, Thu Trang, Việt Hằng:** Hoàn thiện mô hình cá nhân (`simple_cnn.py`, `complex_cnn.py`, `transfer_learning.py`).
 * Bắt buộc phải train xong, xuất được Biểu đồ Loss/Accuracy và Ma trận nhầm lẫn (Confusion Matrix).
 * Tất cả phải Push code hoàn chỉnh lên nhánh `main` trước 22h ngày 08.
 
