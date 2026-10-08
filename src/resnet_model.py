@@ -125,7 +125,8 @@ plt.plot(val_acc, label='Val Accuracy')
 plt.axvline(x=EPOCHS_PHASE_1 - 1, color='r', linestyle='--', label='Bắt đầu Fine-tuning')
 plt.title('Đồ thị Accuracy')
 plt.legend()
-plt.savefig('resnet50_accuracy.png')
+os.makedirs('results', exist_ok=True)
+plt.savefig('results/resnet50_accuracy.png')
 
 # 7️⃣ F1-score & Confusion Matrix
 Y_pred = model.predict(test_generator)
@@ -141,4 +142,4 @@ sns.heatmap(cm, annot=True, fmt='d', cmap='Blues',
             yticklabels=test_generator.class_indices.keys())
 plt.ylabel('True')
 plt.xlabel('Predicted')
-plt.savefig('resnet50_confusion_matrix.png')
+plt.savefig('results/resnet50_confusion_matrix.png')

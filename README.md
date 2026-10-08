@@ -24,6 +24,7 @@ Dự án được thực hiện bởi nhóm 4 người, phân chia kỹ thuật 
 Project1-DeepLearning-PlantVillage/
 ├── data/                        # (Bị ẩn bởi .gitignore) Chứa ảnh gốc chia theo train/val/test
 ├── notebooks/                   # Chứa các file jupyter notebook (.ipynb) khám phá dữ liệu
+├── results/                     # Nơi lưu trữ biểu đồ và ảnh ma trận kết quả sau khi train
 ├── src/                         # Chứa toàn bộ source code Python
 │   ├── data_prep.py             # (Thành viên A) Script tải và chia tập dữ liệu
 │   ├── resnet_model.py          # (Thành viên A) Script train mô hình ResNet50
