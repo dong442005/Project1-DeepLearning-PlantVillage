@@ -9,10 +9,10 @@ Dự án nhằm mục đích phân loại bệnh trên lá cây sử dụng bộ
 
 ## 👥 Đội ngũ thực hiện & Kiến trúc Mô hình
 Dự án được thực hiện bởi nhóm 4 người, phân chia kỹ thuật thành 4 khối lượng công việc như sau:
-- **Thành viên A (Data Pipeline & ResNet50):** Xử lý toàn bộ khâu chuẩn bị dữ liệu (Data Augmentation, Pipeline) và tự huấn luyện thêm mô hình Transfer Learning ResNet50 (mạng sâu, tính học thuật).
-- **Thành viên B (Simple CNN):** Tự thiết kế và huấn luyện mô hình mạng tích chập cơ sở (Baseline) lấy cảm hứng từ kiến trúc kinh điển LeNet-5.
-- **Thành viên C (Complex CNN):** Thiết kế mạng tích chập chuyên sâu tự code (sử dụng Blocks, Batch Normalization, Dropout để chống Overfitting).
-- **Thành viên D (Transfer Learning & MobileNetV2):** Tinh chỉnh (Fine-tuning) mạng MobileNetV2 đã được huấn luyện trước (mô hình nhẹ, tính ứng dụng thực tiễn cao).
+- **Phương Đông (Data Pipeline & ResNet50):** Xử lý toàn bộ khâu chuẩn bị dữ liệu (Data Augmentation, Pipeline) và tự huấn luyện thêm mô hình Transfer Learning ResNet50 (mạng sâu, tính học thuật).
+- **Vân Thư (Simple CNN):** Tự thiết kế và huấn luyện mô hình mạng tích chập cơ sở (Baseline) lấy cảm hứng từ kiến trúc kinh điển LeNet-5.
+- **Thu Trang (Complex CNN):** Thiết kế mạng tích chập chuyên sâu tự code (sử dụng Blocks, Batch Normalization, Dropout để chống Overfitting).
+- **Việt Hằng (Transfer Learning & MobileNetV2):** Tinh chỉnh (Fine-tuning) mạng MobileNetV2 đã được huấn luyện trước (mô hình nhẹ, tính ứng dụng thực tiễn cao).
 
 🔗 **Tài liệu nội bộ cho Nhóm:**
 - [Bảng phân công chi tiết (TASKS & PLAN)](TASKS_AND_PLAN.md)
@@ -24,12 +24,13 @@ Dự án được thực hiện bởi nhóm 4 người, phân chia kỹ thuật 
 Project1-DeepLearning-PlantVillage/
 ├── data/                        # (Bị ẩn bởi .gitignore) Chứa ảnh gốc chia theo train/val/test
 ├── notebooks/                   # Chứa các file jupyter notebook (.ipynb) khám phá dữ liệu
+├── results/                     # Nơi lưu trữ biểu đồ và ảnh ma trận kết quả sau khi train
 ├── src/                         # Chứa toàn bộ source code Python
-│   ├── data_prep.py             # (Thành viên A) Script tải và chia tập dữ liệu
-│   ├── resnet_model.py          # (Thành viên A) Script train mô hình ResNet50
-│   ├── simple_cnn.py            # (Thành viên B) Script train mô hình cơ sở LeNet-5
-│   ├── complex_cnn.py           # (Thành viên C) Script train mô hình CNN sâu
-│   └── transfer_learning.py     # (Thành viên D) Script train mô hình MobileNetV2
+│   ├── data_prep.py             # (Phương Đông) Script tải và chia tập dữ liệu
+│   ├── resnet_model.py          # (Phương Đông) Script train mô hình ResNet50
+│   ├── simple_cnn.py            # (Vân Thư) Script train mô hình cơ sở LeNet-5
+│   ├── complex_cnn.py           # (Thu Trang) Script train mô hình CNN sâu
+│   └── transfer_learning.py     # (Việt Hằng) Script train mô hình MobileNetV2
 ├── .gitignore                   # Chặn các file rác, file dataset nặng
 ├── README.md                    # Lời giới thiệu dự án
 ├── TASKS_AND_PLAN.md            # Bảng phân công nhiệm vụ và lịch trình
@@ -65,9 +66,10 @@ Sau khi đã có thư mục `data/`, hãy chạy từng file code sau để hu�
 - `python src/transfer_learning.py` *(Đang xây dựng - MobileNetV2)*
 - `python src/resnet_model.py` *(Đang xây dựng - ResNet50)*
 
-## 📊 Kết quả thực nghiệm
-Phần này sẽ được cập nhật sau ngày Training (Ngày 4).
-Bao gồm:
-- Bảng so sánh các chỉ số **Accuracy, Precision, Recall, F1-Score** giữa 4 mô hình.
-- Biểu đồ **Loss/Accuracy** theo các epochs.
-- Ma trận nhầm lẫn (Confusion Matrix).
+## 📊 Kết quả thực nghiệm và Mô hình (Models & Results)
+Dưới đây là liên kết tải các mô hình (đã được lưu dưới dạng `.h5`) sau khi huấn luyện xong. Do kích thước file quá lớn (vượt giới hạn 100MB của GitHub), nhóm lưu trữ chúng trên Google Drive:
+
+- 🧠 **ResNet50 Model (Phương Đông - 223MB):** [Tải về tại đây](https://drive.google.com/file/d/1DooI4k3YiHRk8JXDBMMcKT2jk37YSW_T/view?usp=drive_link)
+- *(Các mô hình của Vân Thư, Thu Trang, Việt Hằng sẽ được cập nhật sau)*
+
+Phần đánh giá chi tiết (Bảng so sánh Accuracy, F1-Score, Biểu đồ) sẽ được trình bày cụ thể trong Báo cáo Word cuối kỳ của nhóm.

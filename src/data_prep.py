@@ -4,7 +4,7 @@ import kagglehub
 from sklearn.model_selection import train_test_split
 
 # ==========================================
-# PHẦN 1: TẢI VÀ CHIA TẬP DỮ LIỆU (Thành viên A chạy 1 lần duy nhất)
+# PHẦN 1: TẢI VÀ CHIA TẬP DỮ LIỆU (Phương Đông chạy 1 lần duy nhất)
 # ==========================================
 
 print("Đang tải PlantVillage Dataset từ Kaggle...")
@@ -68,7 +68,7 @@ print("Dữ liệu đã nằm gọn trong thư mục data của Project.")
 print("==========================================")
 
 # ==========================================
-# PHẦN 2: CHUẨN BỊ GENERATOR CHO CÁC MÔ HÌNH (Dùng chung cho Thành viên B, C, D)
+# PHẦN 2: CHUẨN BỊ GENERATOR CHO CÁC MÔ HÌNH (Dùng chung cho Vân Thư, Thu Trang, Việt Hằng)
 # ==========================================
 """
 ĐOẠN CODE MẪU BÊN DƯỚI DÀNH CHO B, C, D COPY VÀO FILE CODE CỦA MÌNH

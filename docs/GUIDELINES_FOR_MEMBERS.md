@@ -37,12 +37,12 @@ Tài liệu này được biên soạn để định hướng chi tiết cho t�
 
 ## 🧑‍💻 THÀNH VIÊN C: Complex CNN (Mạng tích chập sâu)
 **1. Trách nhiệm Code:**
-- Code file `complex_cnn.py`. Xây dựng mô hình tự thiết kế (từ con số 0) nhưng phải sâu và hiện đại hơn mạng của Thành viên B.
+- Code file `complex_cnn.py`. Xây dựng mô hình tự thiết kế (từ con số 0) nhưng phải sâu và hiện đại hơn mạng của Vân Thư.
 - **Định hướng AI (Prompt cho AI):** 
   > "Viết một script Keras tạo một mô hình Custom CNN sâu theo phong cách VGG (VGG-style blocks) cho ảnh 224x224. Tạo khoảng 3 đến 4 khối (blocks). Mỗi khối gồm: 2 lớp `Conv2D` (kernel 3x3, padding='same', activation='relu') -> 1 lớp `BatchNormalization` -> 1 lớp `MaxPooling2D`. Sau khi qua các khối, thêm `Flatten`, 1 lớp `Dense` cỡ 512, thêm `Dropout(0.5)` để chống overfitting. Cuối cùng là output layer. Code phần evaluate tính Accuracy, Precision, Recall, F1-score dùng thư viện sklearn."
 
 **2. Định hướng Viết Báo cáo:**
-- Giải thích rõ tại sao mô hình của Thành viên B (Simple) dễ bị Overfitting, từ đó dẫn dắt sang việc mô hình Complex này phải áp dụng **Batch Normalization** (để hội tụ nhanh) và **Dropout** (để ép các nơ-ron học đặc trưng độc lập). Chú ý tham khảo bài giảng CIFAR-10 của cô giáo vì mô hình này tương tự bài đó nhưng quy mô lớn hơn.
+- Giải thích rõ tại sao mô hình của Vân Thư (Simple) dễ bị Overfitting, từ đó dẫn dắt sang việc mô hình Complex này phải áp dụng **Batch Normalization** (để hội tụ nhanh) và **Dropout** (để ép các nơ-ron học đặc trưng độc lập). Chú ý tham khảo bài giảng CIFAR-10 của cô giáo vì mô hình này tương tự bài đó nhưng quy mô lớn hơn.
 
 ---
 
@@ -54,4 +54,4 @@ Tài liệu này được biên soạn để định hướng chi tiết cho t�
 
 **2. Định hướng Viết Báo cáo:**
 - Viết lý thuyết về **Fully Connected Layer** và **Transfer Learning**.
-- Ở Phần IV (Đánh giá kết quả): Hãy so sánh trực tiếp kết quả của MobileNetV2 (nhẹ, tính toán nhanh) với ResNet50 (nặng, phức tạp) của Thành viên A để xem trên dữ liệu PlantVillage, liệu mô hình phức tạp hơn có thực sự tốt hơn không. Sự phân tích này sẽ làm báo cáo cực kỳ có chiều sâu.
+- Ở Phần IV (Đánh giá kết quả): Hãy so sánh trực tiếp kết quả của MobileNetV2 (nhẹ, tính toán nhanh) với ResNet50 (nặng, phức tạp) của Phương Đông để xem trên dữ liệu PlantVillage, liệu mô hình phức tạp hơn có thực sự tốt hơn không. Sự phân tích này sẽ làm báo cáo cực kỳ có chiều sâu.
