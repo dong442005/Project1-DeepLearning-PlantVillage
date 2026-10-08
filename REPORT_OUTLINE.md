@@ -1,52 +1,53 @@
-# 📑 MỤC LỤC DỰ KIẾN KÈM PHÂN CÔNG BÁO CÁO (Word)
+# Outline chi tiết và phân công nhiệm vụ (Báo cáo Bài tập lớn Deep Learning)
 
-Đây là khung cấu trúc báo cáo chuẩn dựa trên chính xác yêu cầu từ file `Major_Assignment_Report_Project 1_2026.docx` của trường bạn. Tên của người phụ trách được tag trực tiếp vào từng mục để mọi người không bị dẫm chân lên nhau.
+**Đề tài:** Plant Disease Classification using Custom CNNs and Transfer Learning
 
 ---
 
-**PHẦN 1: CƠ SỞ LÝ THUYẾT VỀ MẠNG NƠ-RON TÍCH CHẬP (CNN)**
-- 1.1. Khái niệm và Kiến trúc chung của mạng CNN **(Vân Thư)**
-- 1.2. Phép toán Tích chập (Convolution Operation) **(Vân Thư)**
-- 1.3. Khái niệm Padding và Stride **(Thu Trang)**
-- 1.4. Lớp Gộp (Pooling Layer - Max Pooling & Average Pooling) **(Thu Trang)**
-- 1.5. Lớp Kết nối Đầy đủ (Fully Connected Layer) **(Việt Hằng)**
-- 1.6. Kỹ thuật Transfer Learning (Học chuyển giao) **(Việt Hằng)**
+## PART 1: THEORETICAL BACKGROUND OF CONVOLUTIONAL NEURAL NETWORKS (CNNs)
+1.1. Concept and General Architecture of CNNs – Phạm Vân Thư
+1.2. Convolution Operation – Phạm Vân Thư
+1.3. Padding and Stride – Nguyễn Thị Thu Trang
+1.4. Pooling Layer (Max Pooling & Average Pooling) – Nguyễn Thị Thu Trang
+1.5. Fully Connected Layer – Nguyễn Việt Hằng
+1.6. Transfer Learning – Nguyễn Việt Hằng
 
-**PHẦN 2: THỰC HÀNH ỨNG DỤNG**
+---
 
-**I. MÔ TẢ BÀI TOÁN (PROBLEM DESCRIPTION) -> (Phương Đông)**
-- 1. Tiêu đề bài toán (Phân loại bệnh trên lá cây với PlantVillage)
-- 2. Mục tiêu nghiên cứu
-- 3. Đầu vào (Input) và Đầu ra (Output)
-- 4. Tóm tắt các tác vụ đã thực hiện
+## PART 2: PRACTICAL APPLICATION
 
-**II. MÔ TẢ TẬP DỮ LIỆU (DATASET DESCRIPTION) -> (Phương Đông)**
-- 1. Đường dẫn tải dữ liệu (Link Kaggle)
-- 2. Đặc điểm tập dữ liệu (Số lượng ảnh, loại bệnh/loại lá, kích thước ảnh)
+### I. PROBLEM DESCRIPTION – Nguyễn Phương Đông
+- Problem Title: Plant Disease Classification Using the PlantVillage Dataset
+- Research Objectives
+- Input and Output of the Problem
+- Summary of Tasks Performed
 
-**III. THIẾT KẾ CÁC MÔ HÌNH CNN (CNN MODEL DESIGN)**
-- 1. Tiền xử lý dữ liệu: Làm sạch, chuẩn hóa, tăng cường dữ liệu **(Phương Đông)**
-- 2. Phân chia tập dữ liệu: Train/Val/Test (Kèm số lượng mẫu cụ thể mỗi tập) **(Phương Đông)**
-- 3. Cấu hình huấn luyện: Siêu tham số và Môi trường (Colab GPU) **(Cả nhóm / Leader tổng hợp)**
-- 4. Các thang đo đánh giá: Trình bày công thức Toán học **(Cả nhóm / Leader tổng hợp)**
-- 5. Mô hình 1: Thiết kế mạng Simple CNN **(Vân Thư)**
-- 6. Mô hình 2: Thiết kế mạng Complex CNN (Sử dụng Blocks, BatchNorm, Dropout) **(Thu Trang)**
-- 7. Mô hình 3: Thiết kế mạng Transfer Learning với MobileNetV2 **(Việt Hằng)**
-- 8. Mô hình 4: Thiết kế mạng Transfer Learning với ResNet50 **(Phương Đông)**
+### II. DATASET DESCRIPTION – Nguyễn Phương Đông
+- Dataset Source and Acquisition (Sử dụng PlantVillage dataset từ Kaggle qua kagglehub)
+- Dataset Characteristics (54,305 ảnh RGB, kích thước chuẩn 224x224x3, 14 loại cây trồng, 38 lớp, vấn đề mất cân bằng dữ liệu)
+- Descriptive Statistics of the Dataset
 
-**IV. KẾT QUẢ THỰC NGHIỆM (EXPERIMENTAL RESULTS)**
-*(Mỗi mô hình bên dưới trình bày Biểu đồ Loss/Accuracy và Ma trận nhầm lẫn)*
-- 1. Kết quả của Simple CNN **(Vân Thư)**
-- 2. Kết quả của Complex CNN **(Thu Trang)**
-- 3. Kết quả của MobileNetV2 **(Việt Hằng)**
-- 4. Kết quả của ResNet50 **(Phương Đông)**
-- 5. Bảng tổng hợp Đánh giá (So sánh 4 mô hình qua Accuracy, Precision, Recall, F1-Score) **(Leader tổng hợp)**
-- 6. Thảo luận và Phân tích lỗi (Error Analysis) dựa trên Ma trận nhầm lẫn **(Cả 4 thành viên cùng thảo luận)**
+### III. CNN MODEL DESIGN
+- 1. Data Preprocessing and Dataset Splitting – Nguyễn Phương Đông (Làm sạch, chuẩn hóa, tăng cường dữ liệu và chia tập Train/Validation/Test)
+- 2. Training Configuration – Leader tổng hợp (Môi trường huấn luyện, số epochs, batch size, optimizer, learning rate, hàm loss...)
+- 3. Evaluation Metrics – Leader tổng hợp (Accuracy, Precision, Recall, F1-Score)
+- 4. Model 1: Simple CNN – Phạm Vân Thư (Kiến trúc mô hình, các lớp tích chập, pooling, fully connected)
+- 5. Model 2: Complex CNN – Nguyễn Thị Thu Trang (CNN blocks, các lớp tích chập, pooling, fully connected, Batch Normalization/Dropout)
+- 6. Model 3: Transfer Learning with MobileNetV2 – Nguyễn Việt Hằng (Kiến trúc, phương pháp Transfer Learning/Fine-Tuning, cấu hình huấn luyện)
+- 7. Model 4: Transfer Learning with ResNet50 – Nguyễn Phương Đông (Kiến trúc, phương pháp Transfer Learning/Fine-Tuning, cấu hình huấn luyện)
 
-**V. KẾT LUẬN (CONCLUSION) -> (Cả 4 thành viên cùng chắp bút)**
-- 1. Tóm tắt các kết quả chính mà nhóm đạt được
-- 2. Lựa chọn mô hình tối ưu nhất cho thực tế 
-- 3. Hướng phát triển (Future Work)
+### IV. EXPERIMENTAL RESULTS
+*(Báo cáo hiệu suất trên tập test, bảng các chỉ số Accuracy, Precision, Recall, F1-Score và biểu đồ Loss/Accuracy)*
+- Results of Simple CNN – Phạm Vân Thư
+- Results of Complex CNN – Nguyễn Thị Thu Trang
+- Results of MobileNetV2 – Nguyễn Việt Hằng
+- Results of ResNet50 – Nguyễn Phương Đông
+- Overall Comparison of the Four Models – Leader tổng hợp (Bảng so sánh tổng quan cả 4 mô hình)
 
-**TÀI LIỆU THAM KHẢO (REFERENCES)**
-*(Ai viết lý thuyết hoặc code phần nào tự chèn link tham khảo phần đó)*
+### V. CONCLUSION – Toàn bộ 4 thành viên
+- Summary of the Main Results
+- Best-Performing Model
+- Future Work
+
+### REFERENCES
+*Mỗi thành viên chịu trách nhiệm bổ sung tài liệu tham khảo và link nguồn cho phần lý thuyết hoặc code thuộc phần mình phụ trách.*
