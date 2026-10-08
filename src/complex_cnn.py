@@ -16,7 +16,8 @@ from tensorflow.keras.preprocessing.image import ImageDataGenerator
 ROOT = Path(__file__).resolve().parent.parent
 DATA_DIR = ROOT / "data"
 MODEL_PATH = ROOT / "models" / "complex_cnn_best.keras"
-HISTORY_PATH = ROOT / "outputs" / "complex_cnn" / "complex_cnn_history.csv"
+OUTPUT_DIR = ROOT / "outputs" / "complex_cnn"
+HISTORY_PATH = OUTPUT_DIR / "complex_cnn_history.csv"
 
 IMG_SIZE = 224
 BATCH_SIZE = 32
