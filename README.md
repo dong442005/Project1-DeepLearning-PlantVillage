@@ -24,7 +24,11 @@ Dự án được thực hiện bởi nhóm 4 người, phân chia kỹ thuật 
 Project1-DeepLearning-PlantVillage/
 ├── data/                        # (Bị ẩn bởi .gitignore) Chứa ảnh gốc chia theo train/val/test
 ├── notebooks/                   # Chứa các file jupyter notebook (.ipynb) khám phá dữ liệu
-├── results/                     # Nơi lưu trữ biểu đồ và ảnh ma trận kết quả sau khi train
+├── outputs/                     # Kết quả huấn luyện và đánh giá, chia theo từng mô hình
+│   ├── complex_cnn/             # Biểu đồ, lịch sử train và dự đoán của Complex CNN
+│   ├── simple_cnn/              # Biểu đồ và báo cáo đánh giá của Simple CNN
+│   ├── mobilenetv2/             # Biểu đồ và ma trận nhầm lẫn của MobileNetV2
+│   └── resnet50/                # Biểu đồ và ma trận nhầm lẫn của ResNet50
 ├── src/                         # Chứa toàn bộ source code Python
 │   ├── data_prep.py             # (Phương Đông) Script tải và chia tập dữ liệu
 │   ├── resnet_model.py          # (Phương Đông) Script train mô hình ResNet50
@@ -61,10 +65,10 @@ python src/data_prep.py
 
 ### 3. Huấn luyện các Mô hình
 Sau khi đã có thư mục `data/`, hãy chạy từng file code sau để huấn luyện 4 loại mô hình tương ứng:
-- `python src/simple_cnn.py` *(Đang xây dựng...)*
-- `python src/complex_cnn.py` *(Đang xây dựng...)*
-- `python src/transfer_learning.py` *(Đang xây dựng - MobileNetV2)*
-- `python src/resnet_model.py` *(Đang xây dựng - ResNet50)*
+- `python src/simple_cnn.py`
+- `python src/complex_cnn.py`
+- `python src/transfer_learning.py`
+- `python src/resnet_model.py`
 
 ## 📊 Kết quả thực nghiệm và Mô hình (Models & Results)
 Dưới đây là liên kết tải các mô hình (đã được lưu dưới dạng `.h5`) sau khi huấn luyện xong. Do kích thước file quá lớn (vượt giới hạn 100MB của GitHub), nhóm lưu trữ chúng trên Google Drive:
