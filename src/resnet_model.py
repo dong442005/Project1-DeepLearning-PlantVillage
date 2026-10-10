@@ -1,4 +1,4 @@
-import os
+from pathlib import Path
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
@@ -12,13 +12,14 @@ from sklearn.metrics import classification_report, confusion_matrix
 from sklearn.utils.class_weight import compute_class_weight
 import seaborn as sns
 
-# 1️⃣ Cấu hình chung
+# Cấu hình chung
+OUTPUT_DIR = Path(__file__).resolve().parent.parent / "outputs" / "resnet50"
 IMG_SIZE = (224, 224)
 BATCH_SIZE = 32
 EPOCHS_PHASE_1 = 10
 EPOCHS_PHASE_2 = 10
 
-# 2️⃣ Data augmentation và preprocessing
+# Data augmentation và preprocessing
 train_datagen = ImageDataGenerator(
     preprocessing_function=preprocess_input,
     rotation_range=20,
@@ -57,7 +58,7 @@ test_generator = test_val_datagen.flow_from_directory(
 
 num_classes = len(train_generator.class_indices)
 
-# 3️⃣ Tính Class Weights cho dữ liệu mất cân bằng
+# Tính Class Weights cho dữ liệu mất cân bằng
 train_labels = train_generator.classes
 class_weights_array = compute_class_weight(
     class_weight='balanced',
@@ -66,7 +67,7 @@ class_weights_array = compute_class_weight(
 )
 class_weight_dict = dict(enumerate(class_weights_array))
 
-# 4️⃣ Build model with transfer learning (Phase 1)
+# Build model with transfer learning (Phase 1)
 base_model = ResNet50(weights='imagenet', include_top=False, input_shape=(224, 224, 3))
 base_model.trainable = False  # Freeze base model
 
@@ -90,7 +91,7 @@ history1 = model.fit(
     class_weight=class_weight_dict
 )
 
-# 5️⃣ Fine-tuning (Phase 2)
+# Fine-tuning (Phase 2)
 base_model.trainable = True
 
 # Mở băng 30 lớp cuối
@@ -151,7 +152,7 @@ plt.legend()
 plt.savefig('results/resnet50_loss.png')
 plt.close()
 
-# 7️⃣ F1-score & Confusion Matrix
+# F1-score & Confusion Matrix
 Y_pred = model.predict(test_generator)
 y_pred = np.argmax(Y_pred, axis=1)
 y_true = test_generator.classes
@@ -165,4 +166,4 @@ sns.heatmap(cm, annot=True, fmt='d', cmap='Blues',
             yticklabels=test_generator.class_indices.keys())
 plt.ylabel('True')
 plt.xlabel('Predicted')
-plt.savefig('results/resnet50_confusion_matrix.png')
+plt.savefig(OUTPUT_DIR / 'resnet50_confusion_matrix.png')

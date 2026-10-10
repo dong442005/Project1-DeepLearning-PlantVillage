@@ -3,6 +3,7 @@
 # thêm --epochs n để đổi số epoch, --smoke-test để chạy thử nhanh (file kq có đuôi _smoke)
 import argparse
 import os
+from pathlib import Path
 import random
 import sys
 import time
@@ -29,7 +30,7 @@ SEED = 42
 TRAIN_DIR = 'data/train'
 VAL_DIR = 'data/val'
 TEST_DIR = 'data/test'
-RESULTS_DIR = 'results'
+RESULTS_DIR = Path(__file__).resolve().parent.parent / "outputs" / "simple_cnn"
 WORKERS = min(8, os.cpu_count() or 1)  # số luồng đọc + augment ảnh song song, khâu này chậm nhất lúc train
 
 
