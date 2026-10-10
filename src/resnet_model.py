@@ -117,9 +117,9 @@ model.save('resnet50_finetuned_model.h5')
 history_df1 = pd.DataFrame(history1.history)
 history_df2 = pd.DataFrame(history2.history)
 history_df = pd.concat([history_df1, history_df2], ignore_index=True)
-os.makedirs('results', exist_ok=True)
-history_df.to_csv('results/resnet50_history.csv', index=False)
-print("Đã lưu lịch sử huấn luyện vào results/resnet50_history.csv")
+OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
+history_df.to_csv(OUTPUT_DIR / 'resnet50_history.csv', index=False)
+print(f"Đã lưu lịch sử huấn luyện vào {OUTPUT_DIR / 'resnet50_history.csv'}")
 
 # 6️⃣ Evaluate
 test_loss, test_acc = model.evaluate(test_generator)
@@ -135,8 +135,7 @@ plt.plot(val_acc, label='Val Accuracy')
 plt.axvline(x=EPOCHS_PHASE_1 - 1, color='r', linestyle='--', label='Bắt đầu Fine-tuning')
 plt.title('Đồ thị Accuracy')
 plt.legend()
-os.makedirs('results', exist_ok=True)
-plt.savefig('results/resnet50_accuracy.png')
+plt.savefig(OUTPUT_DIR / 'resnet50_accuracy.png')
 plt.close()
 
 # Vẽ đồ thị Loss
@@ -149,7 +148,7 @@ plt.plot(val_loss, label='Val Loss')
 plt.axvline(x=EPOCHS_PHASE_1 - 1, color='r', linestyle='--', label='Bắt đầu Fine-tuning')
 plt.title('Đồ thị Loss')
 plt.legend()
-plt.savefig('results/resnet50_loss.png')
+plt.savefig(OUTPUT_DIR / 'resnet50_loss.png')
 plt.close()
 
 # F1-score & Confusion Matrix

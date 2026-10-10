@@ -1,3 +1,9 @@
+# Tài liệu chỉ lưu trên máy
+/docs/
+
+# Các file thử nghiệm Complex CNN weighted
+complex_cnn*weighted*
+
 # Python
 __pycache__/
 *.py[cod]
