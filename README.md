@@ -1,79 +1,117 @@
-# 🌿 Nhận Diện Bệnh Qua Lá Cây (PlantVillage Disease Classification)
+# Plant Disease Classification Using Deep Learning
 
-Đây là mã nguồn cho **Project 1 - Môn Deep Learning**.
+## Overview
 
-## 📌 Giới thiệu dự án
-Dự án nhằm mục đích phân loại bệnh trên lá cây sử dụng bộ dữ liệu hình ảnh **PlantVillage**. Chúng tôi sẽ tiến hành tiền xử lý, tăng cường dữ liệu và thiết kế **4 kiến trúc mạng nơ-ron tích chập (CNN)** khác nhau để giải quyết bài toán đa phân loại (Multi-class Classification) này.
+A university Deep Learning project for classifying PlantVillage leaf images into **38 disease and healthy-leaf categories**. The project compares two CNNs trained from scratch with two ImageNet-pretrained models:
 
-**Bộ dữ liệu:** [PlantVillage Dataset (Kaggle)](https://www.kaggle.com/datasets/abdallahalidev/plantvillage-dataset)
+- **Simple CNN:** a LeNet-inspired baseline with three convolutional stages.
+- **Complex CNN:** four convolutional blocks with batch normalization, max pooling, and dropout.
+- **ResNet50:** transfer learning with a residual backbone.
+- **MobileNetV2:** transfer learning with a lightweight backbone.
 
-## 👥 Đội ngũ thực hiện & Kiến trúc Mô hình
-Dự án được thực hiện bởi nhóm 4 người, phân chia kỹ thuật thành 4 khối lượng công việc như sau:
-- **Phương Đông (Data Pipeline & ResNet50):** Xử lý toàn bộ khâu chuẩn bị dữ liệu (Data Augmentation, Pipeline) và tự huấn luyện thêm mô hình Transfer Learning ResNet50 (mạng sâu, tính học thuật).
-- **Vân Thư (Simple CNN):** Tự thiết kế và huấn luyện mô hình mạng tích chập cơ sở (Baseline) lấy cảm hứng từ kiến trúc kinh điển LeNet-5.
-- **Thu Trang (Complex CNN):** Thiết kế mạng tích chập chuyên sâu tự code (sử dụng Blocks, Batch Normalization, Dropout để chống Overfitting).
-- **Việt Hằng (Transfer Learning & MobileNetV2):** Tinh chỉnh (Fine-tuning) mạng MobileNetV2 đã được huấn luyện trước (mô hình nhẹ, tính ứng dụng thực tiễn cao).
+## Dataset
 
-🔗 **Tài liệu nội bộ cho Nhóm:**
-- [Bảng phân công chi tiết (TASKS & PLAN)](TASKS_AND_PLAN.md)
-- [Hướng dẫn AI & Định hướng Logic cho từng thành viên](GUIDELINES_FOR_MEMBERS.md)
-- [Mục lục & Phân công Báo cáo Word](REPORT_OUTLINE.md)
+Images are downloaded from the [PlantVillage Kaggle dataset](https://www.kaggle.com/datasets/abdallahalidev/plantvillage-dataset). The [original dataset repository](https://github.com/spMohanty/PlantVillage-Dataset) provides further context.
 
-## 📂 Cấu trúc thư mục (Folder Structure)
+- **Split:** approximately 70% training, 15% validation, and 15% test, applied within each class with `random_state=42`.
+- **Input size:** 224 × 224 RGB images.
+- **Preprocessing:** Z-score normalization for the custom CNNs; backbone-specific `preprocess_input` for ResNet50 and MobileNetV2.
+- **Augmentation:** rotation, shifts, zoom, and horizontal flips during training; the transfer learning models also use shear.
+
+The dataset is excluded from Git. Preserve the prepared partition for consistent checkpoint comparisons: source filenames are not sorted before splitting, so partitions may differ between machines.
+
+## Project Structure
+
 ```text
 Project1-DeepLearning-PlantVillage/
-├── data/                        # (Bị ẩn bởi .gitignore) Chứa ảnh gốc chia theo train/val/test
-├── notebooks/                   # Chứa các file jupyter notebook (.ipynb) khám phá dữ liệu
-├── outputs/                     # Kết quả huấn luyện và đánh giá, chia theo từng mô hình
-│   ├── complex_cnn/             # Biểu đồ, lịch sử train và dự đoán của Complex CNN
-│   ├── simple_cnn/              # Biểu đồ và báo cáo đánh giá của Simple CNN
-│   ├── mobilenetv2/             # Biểu đồ và ma trận nhầm lẫn của MobileNetV2
-│   └── resnet50/                # Biểu đồ và ma trận nhầm lẫn của ResNet50
-├── src/                         # Chứa toàn bộ source code Python
-│   ├── data_prep.py             # (Phương Đông) Script tải và chia tập dữ liệu
-│   ├── resnet_model.py          # (Phương Đông) Script train mô hình ResNet50
-│   ├── simple_cnn.py            # (Vân Thư) Script train mô hình cơ sở LeNet-5
-│   ├── complex_cnn.py           # (Thu Trang) Script train mô hình CNN sâu
-│   └── transfer_learning.py     # (Việt Hằng) Script train mô hình MobileNetV2
-├── .gitignore                   # Chặn các file rác, file dataset nặng
-├── README.md                    # Lời giới thiệu dự án
-├── TASKS_AND_PLAN.md            # Bảng phân công nhiệm vụ và lịch trình
-├── GUIDELINES_FOR_MEMBERS.md    # Hướng dẫn chi tiết & Prompt AI cho từng người
-└── REPORT_OUTLINE.md            # Dàn ý mục lục và phân công viết báo cáo Word
+├── src/
+│   ├── data_prep.py           # Download and split the dataset
+│   ├── simple_cnn.py          # Train and evaluate Simple CNN
+│   ├── complex_cnn.py         # Train Complex CNN
+│   ├── resnet_model.py        # Train and evaluate ResNet50
+│   ├── transfer_learning.py   # Train and evaluate MobileNetV2
+│   ├── predict.py             # Evaluate saved models or predict one image
+│   └── model_loader.py        # Saved-model compatibility handling
+├── notebooks/                # Dataset exploration and model experiments
+├── outputs/                  # Per-model figures and comparison reports
+├── data/                     # Local train/, val/, and test/ directories
+├── models/                   # Local trained checkpoints
+├── requirements.txt
+└── README.md
 ```
 
-## 🚀 Hướng dẫn cài đặt và sử dụng
+## Installation & Usage
 
-### 1. Cài đặt môi trường và Thư viện
-Nếu chạy trên máy cá nhân, nhóm TUYỆT ĐỐI thống nhất tạo Môi trường ảo (Virtual Environment) để không bị xung đột phiên bản như sau:
+Use **Python 3.11** and run commands from the repository root. CPU execution is supported; GPU acceleration is optional.
 
-**Dùng Conda (Nhanh và tiện nhất):**
+**Clone and install — macOS / Linux:**
+
 ```bash
-conda create -n dl_env python=3.10
-conda activate dl_env
-pip install -r requirements.txt
+git clone https://github.com/dong442005/Project1-DeepLearning-PlantVillage.git
+cd Project1-DeepLearning-PlantVillage
+python3.11 -m venv .venv311
+source .venv311/bin/activate
+python -m pip install -r requirements.txt
 ```
 
-*(Hoặc dùng `python -m venv venv` nếu bạn không xài Conda).*
+On Windows, use `py -3.11 -m venv .venv311` and activate with `.\.venv311\Scripts\Activate.ps1` in PowerShell, then run the same dependency installation command. Training dependencies pin TensorFlow and Keras to **2.15.0**.
 
-### 2. Tải và phân chia Dữ liệu
-Để tự động tải dữ liệu và chia thành các thư mục con `train/`, `val/`, và `test/`, hãy chạy lệnh:
+**Prepare the dataset:**
+
 ```bash
 python src/data_prep.py
 ```
-> **Chú ý:** Quá trình tải sẽ mất khoảng vài phút tùy thuộc vào mạng của bạn. Thư mục `data/` (nơi chứa ảnh) đã được cấu hình ẩn trong `.gitignore` để tránh đẩy dữ liệu khổng lồ lên Git.
 
-### 3. Huấn luyện các Mô hình
-Sau khi đã có thư mục `data/`, hãy chạy từng file code sau để huấn luyện 4 loại mô hình tương ứng:
-- `python src/simple_cnn.py`
-- `python src/complex_cnn.py`
-- `python src/transfer_learning.py`
-- `python src/resnet_model.py`
+This creates `data/train/`, `data/val/`, and `data/test/`, with one directory per category. **Rerunning the script deletes the existing `data/` directory.** It expects `plantvillage dataset/color` within the download; check the downloaded layout if that path is absent.
 
-## 📊 Kết quả thực nghiệm và Mô hình (Models & Results)
-Dưới đây là liên kết tải các mô hình (đã được lưu dưới dạng `.h5`) sau khi huấn luyện xong. Do kích thước file quá lớn (vượt giới hạn 100MB của GitHub), nhóm lưu trữ chúng trên Google Drive:
+**Train each model:**
 
-- 🧠 **ResNet50 Model (Phương Đông - 223MB):** [Tải về tại đây](https://drive.google.com/file/d/1DooI4k3YiHRk8JXDBMMcKT2jk37YSW_T/view?usp=drive_link)
-- *(Các mô hình của Vân Thư, Thu Trang, Việt Hằng sẽ được cập nhật sau)*
+```bash
+python src/simple_cnn.py
+python src/complex_cnn.py
+python src/resnet_model.py
+python src/transfer_learning.py
+```
 
-Phần đánh giá chi tiết (Bảng so sánh Accuracy, F1-Score, Biểu đồ) sẽ được trình bày cụ thể trong Báo cáo Word cuối kỳ của nhóm.
+All four use batch size 32. Simple CNN defaults to 20 epochs; Complex CNN allows up to 30. Both use early stopping on validation loss with patience 5. ResNet50 and MobileNetV2 each use 10 frozen-backbone epochs followed by 10 fine-tuning epochs.
+
+Simple CNN also supports `--epochs 30` and `--smoke-test`; the other scripts do not implement these options. Complex CNN saves `models/complex_cnn_best.keras` and stops if that file already exists. The other scripts save their `.h5` models in the repository root. Figures and reports are stored under the corresponding model directory in `outputs/`; Complex CNN test evaluation is available in `notebooks/complex_cnn.ipynb`.
+
+**Evaluate saved checkpoints without retraining:**
+
+The local checkpoints include Keras 3 files. Create a separate inference environment:
+
+```bash
+python3.11 -m venv .venv-keras3
+source .venv-keras3/bin/activate
+python -m pip install tensorflow==2.20.0 keras==3.13.2 numpy==1.26.4 scikit-learn matplotlib pillow
+python src/predict.py
+```
+
+On Windows, create this environment with `py -3.11` and activate `.\.venv-keras3\Scripts\Activate.ps1`. Before prediction, place `simple_cnn_model.h5`, `complex_cnn_best.keras`, `resnet50_finetuned_model.h5`, and `mobilenetv2_finetuned_model.h5` in `models/`. Checkpoints are excluded from Git; a fresh clone requires training them or obtaining the files separately.
+
+Keep `IMAGE_PATH = None` and `TEST_STEPS = None` in `src/predict.py` for the full-test comparison. Set `IMAGE_PATH` to an existing image path for a single-image demonstration. Results are written to `outputs/comparison/`; CSV files remain local because they are ignored.
+
+## Results
+
+The comparison below uses **8,162 test images**, with metrics verified against the [checkpoint evaluation reports](outputs/comparison/).
+
+| Model                                                    | Test Accuracy | Macro F1-score |
+| -------------------------------------------------------- | ------------: | -------------: |
+| [Simple CNN](outputs/comparison/simple_cnn_report.txt)   |        95.71% |         0.9491 |
+| [Complex CNN](outputs/comparison/complex_cnn_report.txt) |        95.72% |         0.9403 |
+| [ResNet50](outputs/comparison/resnet50_report.txt)       |        99.04% |         0.9891 |
+| [MobileNetV2](outputs/comparison/mobilenetv2_report.txt) |        96.17% |         0.9575 |
+
+ResNet50 has the highest accuracy and macro F1 in this comparison. The custom CNNs have similar accuracy, while Simple CNN has higher macro F1. These results describe the evaluated checkpoints and do not establish performance on field photographs.
+
+Earlier training reports and figures may represent different runs. In particular, the older Simple CNN report records 95.03% accuracy; the table uses the common checkpoint evaluation above.
+
+## Team
+
+| Member      | Contribution                  |
+| ----------- | ----------------------------- |
+| Phương Đông | Data preparation and ResNet50 |
+| Vân Thư     | Simple CNN                    |
+| Thu Trang   | Complex CNN                   |
+| Việt Hằng   | MobileNetV2                   |
