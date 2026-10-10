@@ -1,6 +1,7 @@
 import os
 import matplotlib.pyplot as plt
 import numpy as np
+import pandas as pd
 import tensorflow as tf
 from tensorflow.keras import layers, models
 from tensorflow.keras.applications import ResNet50
@@ -111,6 +112,14 @@ history2 = model.fit(
 
 model.save('resnet50_finetuned_model.h5')
 
+# Lưu lịch sử huấn luyện (Loss, Accuracy) ra file CSV
+history_df1 = pd.DataFrame(history1.history)
+history_df2 = pd.DataFrame(history2.history)
+history_df = pd.concat([history_df1, history_df2], ignore_index=True)
+os.makedirs('results', exist_ok=True)
+history_df.to_csv('results/resnet50_history.csv', index=False)
+print("Đã lưu lịch sử huấn luyện vào results/resnet50_history.csv")
+
 # 6️⃣ Evaluate
 test_loss, test_acc = model.evaluate(test_generator)
 print(f"Test accuracy: {test_acc:.4f}")
@@ -127,6 +136,20 @@ plt.title('Đồ thị Accuracy')
 plt.legend()
 os.makedirs('results', exist_ok=True)
 plt.savefig('results/resnet50_accuracy.png')
+plt.close()
+
+# Vẽ đồ thị Loss
+loss = history1.history['loss'] + history2.history['loss']
+val_loss = history1.history['val_loss'] + history2.history['val_loss']
+
+plt.figure(figsize=(8, 6))
+plt.plot(loss, label='Train Loss')
+plt.plot(val_loss, label='Val Loss')
+plt.axvline(x=EPOCHS_PHASE_1 - 1, color='r', linestyle='--', label='Bắt đầu Fine-tuning')
+plt.title('Đồ thị Loss')
+plt.legend()
+plt.savefig('results/resnet50_loss.png')
+plt.close()
 
 # 7️⃣ F1-score & Confusion Matrix
 Y_pred = model.predict(test_generator)
