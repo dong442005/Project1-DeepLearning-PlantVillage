@@ -1,9 +1,4 @@
-"""
-transfer_learning.py - Thành viên D
-Mô hình Transfer Learning dùng MobileNetV2 để phân loại bệnh lá cây (PlantVillage)
-"""
-
-import os
+from pathlib import Path
 import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
@@ -17,14 +12,15 @@ from tensorflow.keras.optimizers import Adam
 from sklearn.metrics import classification_report, confusion_matrix
 from sklearn.utils.class_weight import compute_class_weight
 
-# 1️⃣ Cấu hình chung
+# Cấu hình các tham số
+OUTPUT_DIR = Path(__file__).resolve().parent.parent / "outputs" / "mobilenetv2"
 IMG_SIZE = (224, 224)
 BATCH_SIZE = 32
 EPOCHS_PHASE_1 = 10
 EPOCHS_PHASE_2 = 10
 
-# 2️⃣ Data augmentation và preprocessing
-# Thành viên D dùng preprocess_input của MobileNetV2
+# Data augmentation và preprocessing
+# Dùng preprocess_input của MobileNetV2
 train_datagen = ImageDataGenerator(
     preprocessing_function=preprocess_input,
     rotation_range=20,
@@ -37,7 +33,7 @@ train_datagen = ImageDataGenerator(
 
 test_val_datagen = ImageDataGenerator(preprocessing_function=preprocess_input)
 
-# Load data từ thư mục (cấu trúc của anh A)
+# Load data từ thư mục
 train_generator = train_datagen.flow_from_directory(
     'data/train',
     target_size=IMG_SIZE,
@@ -57,12 +53,12 @@ test_generator = test_val_datagen.flow_from_directory(
     target_size=IMG_SIZE,
     batch_size=BATCH_SIZE,
     class_mode='categorical',
-    shuffle=False  # [QUAN TRỌNG] tắt shuffle để vẽ Confusion Matrix không bị sai
+    shuffle=False
 )
 
 num_classes = len(train_generator.class_indices)
 
-# 3️⃣ Tính Class Weights cho dữ liệu mất cân bằng
+# Tính Class Weights cho dữ liệu mất cân bằng
 train_labels = train_generator.classes
 class_weights_array = compute_class_weight(
     class_weight='balanced',
@@ -71,7 +67,7 @@ class_weights_array = compute_class_weight(
 )
 class_weight_dict = dict(enumerate(class_weights_array))
 
-# 4️⃣ Build model MobileNetV2 (Phase 1 - Freeze base)
+# Build model MobileNetV2
 base_model = MobileNetV2(weights='imagenet', include_top=False, input_shape=(224, 224, 3))
 base_model.trainable = False  # đóng băng toàn bộ base
 
@@ -100,7 +96,7 @@ history1 = model.fit(
     class_weight=class_weight_dict
 )
 
-# 5️⃣ Fine-tuning (Phase 2 - mở băng 20 layer cuối)
+# Fine-tuning
 print("\n--- Phase 2: Fine-tuning (mở băng 20 layer cuối) ---")
 base_model.trainable = True
 
@@ -123,7 +119,7 @@ history2 = model.fit(
 
 model.save('mobilenetv2_finetuned_model.h5')
 
-# 6️⃣ Evaluate trên tập Test
+# Evaluate trên tập Test
 test_loss, test_acc = model.evaluate(test_generator)
 print(f"Test accuracy: {test_acc:.4f}")
 
@@ -137,8 +133,8 @@ plt.plot(val_acc, label='Val Accuracy')
 plt.axvline(x=EPOCHS_PHASE_1 - 1, color='r', linestyle='--', label='Bắt đầu Fine-tuning')
 plt.title('Đồ thị Accuracy - MobileNetV2')
 plt.legend()
-os.makedirs('results', exist_ok=True)
-plt.savefig('results/mobilenetv2_accuracy.png')
+OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
+plt.savefig(OUTPUT_DIR / 'mobilenetv2_accuracy.png')
 plt.show()
 
 # Vẽ thêm đồ thị Loss
@@ -151,7 +147,7 @@ plt.plot(val_loss, label='Val Loss')
 plt.axvline(x=EPOCHS_PHASE_1 - 1, color='r', linestyle='--', label='Bắt đầu Fine-tuning')
 plt.title('Đồ thị Loss - MobileNetV2')
 plt.legend()
-plt.savefig('results/mobilenetv2_loss.png')
+plt.savefig(OUTPUT_DIR / 'mobilenetv2_loss.png')
 plt.show()
 
 # 7️⃣ Classification Report & Confusion Matrix
@@ -170,7 +166,7 @@ sns.heatmap(cm, annot=True, fmt='d', cmap='Blues',
 plt.title('Confusion Matrix - MobileNetV2')
 plt.ylabel('True')
 plt.xlabel('Predicted')
-plt.savefig('results/mobilenetv2_confusion_matrix.png')
+plt.savefig(OUTPUT_DIR / 'mobilenetv2_confusion_matrix.png')
 plt.show()
 
 print("\nDONE!")
