@@ -1,4 +1,4 @@
-# Plant Disease Classification Using Deep Learning
+# Plant Disease Classification using Custom CNNs and Transfer Learning
 
 [![Python 3.11](https://img.shields.io/badge/Python-3.11-3776AB?style=flat&logo=python&logoColor=white)](https://www.python.org/)
 [![TensorFlow](https://img.shields.io/badge/TensorFlow-2.15-FF6F00?style=flat&logo=tensorflow&logoColor=white)](https://www.tensorflow.org/)
