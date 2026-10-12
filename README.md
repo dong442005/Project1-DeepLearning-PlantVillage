@@ -1,70 +1,92 @@
 # Plant Disease Classification Using Deep Learning
 
-## Overview
+[![Python 3.11](https://img.shields.io/badge/Python-3.11-3776AB?style=flat&logo=python&logoColor=white)](https://www.python.org/)
+[![TensorFlow](https://img.shields.io/badge/TensorFlow-2.15-FF6F00?style=flat&logo=tensorflow&logoColor=white)](https://www.tensorflow.org/)
+[![Dataset](https://img.shields.io/badge/Dataset-PlantVillage-green?style=flat)](https://www.kaggle.com/datasets/abdallahalidev/plantvillage-dataset)
 
-A university Deep Learning project for classifying PlantVillage leaf images into **38 disease and healthy-leaf categories**. The project compares two CNNs trained from scratch with two ImageNet-pretrained models:
+Group 3, Project 1 Deep Learning: Phân loại bệnh trên lá cây dựa trên bộ dữ liệu PlantVillage thành **38 lớp (bệnh và lá khỏe mạnh)**. Mục dích là so sánh hiệu năng giữa 2 mô hình CNN tự xây dựng (train từ đầu) và 2 mô hình Transfer Learning (pretrained từ ImageNet):
 
-- **Simple CNN:** a LeNet-inspired baseline with three convolutional stages.
-- **Complex CNN:** four convolutional blocks with batch normalization, max pooling, and dropout.
-- **ResNet50:** transfer learning with a residual backbone.
-- **MobileNetV2:** transfer learning with a lightweight backbone.
 
-## Dataset
+- **Simple CNN:** Baseline 3 khối tích chập lấy cảm hứng từ kiến trúc LeNet-5.
+- **Complex CNN:** 4 khối tích chập kết hợp Batch Normalization, Max Pooling và Dropout.
+- **ResNet50:** Transfer learning với kiến trúc mạng phần dư (Residual Network).
+- **MobileNetV2:** Transfer learning với kiến trúc mạng nhẹ tối ưu cho thiết bị di động.
 
-Images are downloaded from the [PlantVillage Kaggle dataset](https://www.kaggle.com/datasets/abdallahalidev/plantvillage-dataset). The [original dataset repository](https://github.com/spMohanty/PlantVillage-Dataset) provides further context.
+---
 
-- **Split:** approximately 70% training, 15% validation, and 15% test, applied within each class with `random_state=42`.
-- **Input size:** 224 × 224 RGB images.
-- **Preprocessing:** Z-score normalization for the custom CNNs; backbone-specific `preprocess_input` for ResNet50 and MobileNetV2.
-- **Augmentation:** rotation, shifts, zoom, and horizontal flips during training; ResNet50 also uses shear.
+## 1. Dataset
 
-The dataset is excluded from Git. Preserve the prepared partition for consistent checkpoint comparisons: source filenames are not sorted before splitting, so partitions may differ between machines.
+Dữ liệu ảnh được tải từ [PlantVillage Kaggle dataset](https://www.kaggle.com/datasets/abdallahalidev/plantvillage-dataset) ([PlantVillage original repo](https://github.com/spMohanty/PlantVillage-Dataset)).
 
-## Project Structure
+- **Phân chia tập dữ liệu:** ~70% Train, 15% Validation, 15% Test (chia đều theo từng lớp với `random_state=42`).
+- **Kích thước đầu vào:** Ảnh màu RGB 224 × 224.
+- **Tiền xử lý (Preprocessing):** Chuẩn hóa Z-score cho Simple CNN & Complex CNN; dùng `preprocess_input` riêng cho ResNet50 và MobileNetV2.
+- **Tăng cường dữ liệu (Augmentation):** Xoay góc (rotation), dịch chuyển (shifts), zoom, lật ngang (horizontal flip); mô hình ResNet50 có thêm biến dạng (shear).
+
+> **Lưu ý:** Thư mục dữ liệu `data/` được loại trừ khỏi Git. Để đảm bảo tính nhất quán khi đánh giá checkpoint, nên giữ nguyên phân vùng dữ liệu sau khi chạy script chia tập.
+
+---
+
+## 2. Cấu trúc thư mục
 
 ```text
 Project1-DeepLearning-PlantVillage/
 ├── src/
-│   ├── data_prep.py           # Download and split the dataset
-│   ├── simple_cnn.py          # Train and evaluate Simple CNN
-│   ├── complex_cnn.py         # Train Complex CNN
-│   ├── resnet_model.py        # Train and evaluate ResNet50
-│   ├── transfer_learning.py   # Train and evaluate MobileNetV2
-│   ├── predict.py             # Evaluate saved models or predict one image
-│   └── model_loader.py        # Saved-model compatibility handling
-├── notebooks/                # Dataset exploration and model experiments
-├── outputs/                  # Per-model figures and comparison reports
-├── data/                     # Local train/, val/, and test/ directories
-├── models/                   # Local trained checkpoints
-├── requirements.txt
+│   ├── data_prep.py           # Tải và chia tập dữ liệu Train / Val / Test
+│   ├── simple_cnn.py          # Huấn luyện và đánh giá Simple CNN
+│   ├── complex_cnn.py         # Huấn luyện Complex CNN
+│   ├── resnet_model.py        # Huấn luyện và đánh giá ResNet50
+│   ├── transfer_learning.py   # Huấn luyện và đánh giá MobileNetV2
+│   ├── predict.py             # Đánh giá các model hoặc dự đoán thử 1 ảnh
+│   └── model_loader.py        # Hỗ trợ nạp model tương thích giữa các phiên bản Keras
+├── notebooks/                 # Khảo sát dữ liệu và thử nghiệm mô hình
+├── outputs/                   # Đồ thị huấn luyện, ma trận nhầm lẫn và báo cáo
+├── data/                      # Dữ liệu train/, val/, test/ (tạo khi chạy data_prep.py)
+├── models/                    # File trọng số mô hình đã huấn luyện
+├── requirements.txt           # Danh sách thư viện cần thiết
 └── README.md
 ```
 
-## Installation & Usage
+---
 
-Use **Python 3.11** and run commands from the repository root. CPU execution is supported; GPU acceleration is optional.
+## 3. Cài đặt & Hướng dẫn chạy
 
-**Clone and install — macOS / Linux:**
+Khuyến nghị sử dụng **Python 3.11** và thực thi lệnh từ thư mục gốc của repository.
 
+### 3.1 Cài đặt môi trường
+
+**Trên macOS / Linux:**
 ```bash
 git clone https://github.com/dong442005/Project1-DeepLearning-PlantVillage.git
 cd Project1-DeepLearning-PlantVillage
 python3.11 -m venv .venv311
 source .venv311/bin/activate
-python -m pip install -r requirements.txt
+pip install -r requirements.txt
 ```
 
-On Windows, use `py -3.11 -m venv .venv311` and activate with `.\.venv311\Scripts\Activate.ps1` in PowerShell, then run the same dependency installation command. Training dependencies pin TensorFlow and Keras to **2.15.0**.
+**Trên Windows (PowerShell):**
+```powershell
+py -3.11 -m venv .venv311
+.\.venv311\Scripts\Activate.ps1
+pip install -r requirements.txt
+```
+*(Môi trường huấn luyện sử dụng TensorFlow và Keras 2.15.0).*
 
-**Prepare the dataset:**
+---
+
+### 3.2 Chuẩn bị dữ liệu
 
 ```bash
 python src/data_prep.py
 ```
+Script sẽ tự động chuẩn bị thư mục `data/train/`, `data/val/` và `data/test/`.  
+*Lưu ý: Nếu chạy lại script, thư mục `data/` hiện tại sẽ được khởi tạo lại.*
 
-This creates `data/train/`, `data/val/`, and `data/test/`, with one directory per category. **Rerunning the script deletes the existing `data/` directory.** It expects `plantvillage dataset/color` within the download; check the downloaded layout if that path is absent.
+---
 
-**Train each model:**
+### 3.3 Huấn luyện mô hình
+
+Chạy từng script tương ứng trong thư mục `src/`:
 
 ```bash
 python src/simple_cnn.py
@@ -73,54 +95,60 @@ python src/resnet_model.py
 python src/transfer_learning.py
 ```
 
-All four use batch size 32. Simple CNN defaults to 20 epochs; Complex CNN allows up to 30. Both use early stopping on validation loss with patience 5. ResNet50 and MobileNetV2 each use 10 frozen-backbone epochs followed by 10 fine-tuning epochs.
+- Các mô hình đều dùng `batch_size = 32`.
+- **Simple CNN:** Mặc định 20 epoch (có thể chỉnh bằng `--epochs 30` hoặc `--smoke-test`).
+- **Complex CNN:** Huấn luyện tối đa 30 epoch với Early Stopping (patience = 5). File model lưu tại `models/complex_cnn_best.keras`.
+- **ResNet50 & MobileNetV2:** Huấn luyện 2 giai đoạn (10 epoch đầu đóng băng backbone + 10 epoch sau fine-tuning).
+- Kết quả và biểu đồ sau khi train được lưu tự động trong thư mục `outputs/`.
 
-Simple CNN also supports `--epochs 30` and `--smoke-test`; the other scripts do not implement these options. Complex CNN saves `models/complex_cnn_best.keras` and stops if that file already exists. The other scripts save their `.h5` models in the repository root. Figures and reports are stored under the corresponding model directory in `outputs/`; Complex CNN test evaluation is available in `notebooks/complex_cnn.ipynb`.
+---
 
-**Evaluate saved checkpoints without retraining:**
+### 3.4 Đánh giá và Dự đoán (Inference)
 
-The local checkpoints include Keras 3 files. Create a separate inference environment:
+Nếu muốn chạy trực tiếp file checkpoint đã huấn luyện mà không cần train lại:
 
+1. **Tải trọng số mô hình:** Tải 4 file model và đặt vào thư mục `models/`:
+
+| Mô hình | Tên file | Link tải Google Drive |
+| :--- | :--- | :--- |
+| **Simple CNN** | `simple_cnn_model.h5` | [Tải về](https://drive.google.com/file/d/1Sm-wobQFy9BJxGX1k-ymcj9AwLZQYVGB/view?usp=drive_link) |
+| **Complex CNN** | `complex_cnn_best.keras` | [Tải về](https://drive.google.com/file/d/1u4jGbdPBOSjgAoLPtIXldHX1aogQ54NW/view?usp=drive_link) |
+| **ResNet50** | `resnet50_finetuned_model.h5` | [Tải về](https://drive.google.com/file/d/1UMcnfKdfKLHgxe-mLu5CJYCGoO7_8CiT/view?usp=drive_link) |
+| **MobileNetV2** | `mobilenetv2_finetuned_model.h5` | [Tải về](https://drive.google.com/file/d/1cm6hZZtg2CG-PF4kxbcpPzBstv1DrXoi/view?usp=drive_link) |
+
+2. **Chạy đánh giá:**
 ```bash
-python3.11 -m venv .venv-keras3
-source .venv-keras3/bin/activate
-python -m pip install tensorflow==2.20.0 keras==3.13.2 numpy==1.26.4 scikit-learn matplotlib pillow
 python src/predict.py
 ```
 
-On Windows, create this environment with `py -3.11` and activate `.\.venv-keras3\Scripts\Activate.ps1`. Before prediction, place the four checkpoint files in `models/`. The trained checkpoints are shared on Google Drive:
+- Mặc định (`IMAGE_PATH = None`): script sẽ đánh giá cả 4 mô hình trên toàn bộ tập test và xuất bảng so sánh chi tiết ra `outputs/comparison/`.
+- Để dự đoán thử trên một ảnh cụ thể: mở `src/predict.py` và điền đường dẫn ảnh vào biến `IMAGE_PATH` (ví dụ: `'data/test/Tomato___healthy/xxxx.jpg'`).
 
-| File | Link |
-| ---- | ---- |
-| `simple_cnn_model.h5` | [Download](https://drive.google.com/file/d/1Sm-wobQFy9BJxGX1k-ymcj9AwLZQYVGB/view?usp=drive_link) |
-| `complex_cnn_best.keras` | [Download](https://drive.google.com/file/d/1u4jGbdPBOSjgAoLPtIXldHX1aogQ54NW/view?usp=drive_link) |
-| `resnet50_finetuned_model.h5` | [Download](https://drive.google.com/file/d/1UMcnfKdfKLHgxe-mLu5CJYCGoO7_8CiT/view?usp=drive_link) |
-| `mobilenetv2_finetuned_model.h5` | [Download](https://drive.google.com/file/d/1cm6hZZtg2CG-PF4kxbcpPzBstv1DrXoi/view?usp=drive_link) |
+---
 
-Checkpoints are excluded from Git; download the files above and place them under `models/` before running `predict.py`.
+## 4. Kết quả thực nghiệm
 
-Keep `IMAGE_PATH = None` and `TEST_STEPS = None` in `src/predict.py` for the full-test comparison. Set `IMAGE_PATH` to an existing image path for a single-image demonstration. Results are written to `outputs/comparison/`; CSV files remain local because they are ignored.
+Kết quả dưới đây được đánh giá đồng nhất trên cùng tập kiểm thử **8,162 ảnh test** thông qua pipeline `src/predict.py`:
 
-## Results
+| Mô hình | Accuracy | Precision | Recall | F1-score |
+| :--- | :---: | :---: | :---: | :---: |
+| **Simple CNN** | 95.03% | 92.98% | 94.92% | 93.80% |
+| **Complex CNN** | 95.72% | 94.15% | 94.23% | 94.03% |
+| **MobileNetV2** | 95.07% | 94.46% | 95.18% | 94.72% |
+| **ResNet50** | **98.76%** | **98.79%** | **98.76%** | **98.76%** |
 
-The comparison below uses **8,162 test images**, with all metrics computed from the same evaluation pipeline (`src/predict.py`) and verified against the [checkpoint evaluation reports](outputs/comparison/).
+### Nhận xét:
+- **ResNet50** đạt kết quả cao nhất ở toàn bộ các độ đo (Accuracy đạt 98.76%)
+- **Complex CNN** đạt độ chính xác 95.72%, nhỉnh hơn một chút so với **Simple CNN** (95.03%)
+- **MobileNetV2** đạt 95.07% và F1-score 94.72%
 
-| Model                                                    | Accuracy | Macro Precision | Macro Recall | Macro F1 |
-| -------------------------------------------------------- | -------: | --------------: | -----------: | -------: |
-| [Simple CNN](outputs/comparison/simple_cnn_report.txt)   |   95.71% |          93.89% |       96.16% |   94.91% |
-| [Complex CNN](outputs/comparison/complex_cnn_report.txt) |   95.72% |          94.15% |       94.23% |   94.03% |
-| [ResNet50](outputs/comparison/resnet50_report.txt)       |   99.04% |          98.80% |       99.04% |   98.91% |
-| [MobileNetV2](outputs/comparison/mobilenetv2_report.txt) |   96.17% |          95.33% |       96.33% |   95.75% |
+---
 
-ResNet50 leads across all four metrics. Among the custom CNNs, Simple CNN and Complex CNN have nearly identical accuracy (95.71% vs 95.72%), while MobileNetV2 outperforms both with 96.17%. These results describe the evaluated checkpoints and do not establish performance on field photographs.
+## 5. Phân công nhóm
 
-Earlier training reports may represent different runs. In particular, the older Simple CNN report records 95.03% accuracy; the table above uses the common checkpoint evaluation via `predict.py`.
-
-## Team
-
-| Member      | Contribution                  |
-| ----------- | ----------------------------- |
-| Phương Đông | Data preparation and ResNet50 |
-| Vân Thư     | Simple CNN                    |
-| Thu Trang   | Complex CNN                   |
-| Việt Hằng   | MobileNetV2                   |
+| Thành viên | Nhiệm vụ thực hiện |
+| :--- | :--- |
+| **Phương Đông** | Chuẩn bị dữ liệu & Huấn luyện mô hình ResNet50 |
+| **Vân Thư** | Xây dựng và đánh giá mô hình Simple CNN |
+| **Thu Trang** | Xây dựng và đánh giá mô hình Complex CNN |
+| **Việt Hằng** | Xây dựng và đánh giá mô hình MobileNetV2 |
