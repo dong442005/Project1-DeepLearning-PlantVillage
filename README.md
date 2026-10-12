@@ -16,7 +16,7 @@ Images are downloaded from the [PlantVillage Kaggle dataset](https://www.kaggle.
 - **Split:** approximately 70% training, 15% validation, and 15% test, applied within each class with `random_state=42`.
 - **Input size:** 224 × 224 RGB images.
 - **Preprocessing:** Z-score normalization for the custom CNNs; backbone-specific `preprocess_input` for ResNet50 and MobileNetV2.
-- **Augmentation:** rotation, shifts, zoom, and horizontal flips during training; the transfer learning models also use shear.
+- **Augmentation:** rotation, shifts, zoom, and horizontal flips during training; ResNet50 also uses shear.
 
 The dataset is excluded from Git. Preserve the prepared partition for consistent checkpoint comparisons: source filenames are not sorted before splitting, so partitions may differ between machines.
 
@@ -94,18 +94,18 @@ Keep `IMAGE_PATH = None` and `TEST_STEPS = None` in `src/predict.py` for the ful
 
 ## Results
 
-The comparison below uses **8,162 test images**, with metrics verified against the [checkpoint evaluation reports](outputs/comparison/).
+The comparison below uses **8,162 test images**, with all metrics computed from the same evaluation pipeline (`src/predict.py`) and verified against the [checkpoint evaluation reports](outputs/comparison/).
 
-| Model                                                    | Test Accuracy | Macro F1-score |
-| -------------------------------------------------------- | ------------: | -------------: |
-| [Simple CNN](outputs/comparison/simple_cnn_report.txt)   |        95.71% |         0.9491 |
-| [Complex CNN](outputs/comparison/complex_cnn_report.txt) |        95.72% |         0.9403 |
-| [ResNet50](outputs/comparison/resnet50_report.txt)       |        99.04% |         0.9891 |
-| [MobileNetV2](outputs/comparison/mobilenetv2_report.txt) |        96.17% |         0.9575 |
+| Model                                                    | Accuracy | Macro Precision | Macro Recall | Macro F1 |
+| -------------------------------------------------------- | -------: | --------------: | -----------: | -------: |
+| [Simple CNN](outputs/comparison/simple_cnn_report.txt)   |   95.71% |          93.89% |       96.16% |   94.91% |
+| [Complex CNN](outputs/comparison/complex_cnn_report.txt) |   95.72% |          94.15% |       94.23% |   94.03% |
+| [ResNet50](outputs/comparison/resnet50_report.txt)       |   99.04% |          98.80% |       99.04% |   98.91% |
+| [MobileNetV2](outputs/comparison/mobilenetv2_report.txt) |   96.17% |          95.33% |       96.33% |   95.75% |
 
-ResNet50 has the highest accuracy and macro F1 in this comparison. The custom CNNs have similar accuracy, while Simple CNN has higher macro F1. These results describe the evaluated checkpoints and do not establish performance on field photographs.
+ResNet50 leads across all four metrics. Among the custom CNNs, Simple CNN and Complex CNN have nearly identical accuracy (95.71% vs 95.72%), while MobileNetV2 outperforms both with 96.17%. These results describe the evaluated checkpoints and do not establish performance on field photographs.
 
-Earlier training reports and figures may represent different runs. In particular, the older Simple CNN report records 95.03% accuracy; the table uses the common checkpoint evaluation above.
+Earlier training reports may represent different runs. In particular, the older Simple CNN report records 95.03% accuracy; the table above uses the common checkpoint evaluation via `predict.py`.
 
 ## Team
 
