@@ -3,6 +3,7 @@ keras==2.15.0
 kagglehub
 scikit-learn
 numpy<2.0.0
+pandas
 matplotlib
 seaborn
 opencv-python
