@@ -121,7 +121,7 @@ OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
 history_df.to_csv(OUTPUT_DIR / 'resnet50_history.csv', index=False)
 print(f"Đã lưu lịch sử huấn luyện vào {OUTPUT_DIR / 'resnet50_history.csv'}")
 
-# 6️⃣ Evaluate
+# evaluate trên tập test
 test_loss, test_acc = model.evaluate(test_generator)
 print(f"Test accuracy: {test_acc:.4f}")
 

@@ -135,7 +135,7 @@ plt.title('Đồ thị Accuracy - MobileNetV2')
 plt.legend()
 OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
 plt.savefig(OUTPUT_DIR / 'mobilenetv2_accuracy.png')
-plt.show()
+plt.close()
 
 # Vẽ thêm đồ thị Loss
 loss = history1.history['loss'] + history2.history['loss']
@@ -148,9 +148,9 @@ plt.axvline(x=EPOCHS_PHASE_1 - 1, color='r', linestyle='--', label='Bắt đầu
 plt.title('Đồ thị Loss - MobileNetV2')
 plt.legend()
 plt.savefig(OUTPUT_DIR / 'mobilenetv2_loss.png')
-plt.show()
+plt.close()
 
-# 7️⃣ Classification Report & Confusion Matrix
+# classification report + confusion matrix
 Y_pred = model.predict(test_generator)
 y_pred = np.argmax(Y_pred, axis=1)
 y_true = test_generator.classes
@@ -167,6 +167,6 @@ plt.title('Confusion Matrix - MobileNetV2')
 plt.ylabel('True')
 plt.xlabel('Predicted')
 plt.savefig(OUTPUT_DIR / 'mobilenetv2_confusion_matrix.png')
-plt.show()
+plt.close()
 
 print("\nDONE!")
