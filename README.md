@@ -88,7 +88,16 @@ python -m pip install tensorflow==2.20.0 keras==3.13.2 numpy==1.26.4 scikit-lear
 python src/predict.py
 ```
 
-On Windows, create this environment with `py -3.11` and activate `.\.venv-keras3\Scripts\Activate.ps1`. Before prediction, place `simple_cnn_model.h5`, `complex_cnn_best.keras`, `resnet50_finetuned_model.h5`, and `mobilenetv2_finetuned_model.h5` in `models/`. Checkpoints are excluded from Git; a fresh clone requires training them or obtaining the files separately.
+On Windows, create this environment with `py -3.11` and activate `.\.venv-keras3\Scripts\Activate.ps1`. Before prediction, place the four checkpoint files in `models/`. The trained checkpoints are shared on Google Drive:
+
+| File | Link |
+| ---- | ---- |
+| `simple_cnn_model.h5` | [Download](https://drive.google.com/file/d/1Sm-wobQFy9BJxGX1k-ymcj9AwLZQYVGB/view?usp=drive_link) |
+| `complex_cnn_best.keras` | [Download](https://drive.google.com/file/d/1u4jGbdPBOSjgAoLPtIXldHX1aogQ54NW/view?usp=drive_link) |
+| `resnet50_finetuned_model.h5` | [Download](https://drive.google.com/file/d/1UMcnfKdfKLHgxe-mLu5CJYCGoO7_8CiT/view?usp=drive_link) |
+| `mobilenetv2_finetuned_model.h5` | [Download](https://drive.google.com/file/d/1cm6hZZtg2CG-PF4kxbcpPzBstv1DrXoi/view?usp=drive_link) |
+
+Checkpoints are excluded from Git; download the files above and place them under `models/` before running `predict.py`.
 
 Keep `IMAGE_PATH = None` and `TEST_STEPS = None` in `src/predict.py` for the full-test comparison. Set `IMAGE_PATH` to an existing image path for a single-image demonstration. Results are written to `outputs/comparison/`; CSV files remain local because they are ignored.
 
